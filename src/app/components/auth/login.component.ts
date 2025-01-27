@@ -3,7 +3,11 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService, LoginDeliveryReq, LoginWSAReq } from '@core/auth/auth.service';
+import {
+  AuthService,
+  LoginDeliveryReq,
+  LoginWSAReq,
+} from '@core/auth/auth.service';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
@@ -31,12 +35,12 @@ enum LoginType {
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    LoginDescComponent
+    LoginDescComponent,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DestroyService]
+  providers: [DestroyService],
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
@@ -78,15 +82,13 @@ export class LoginComponent {
   onSync(): void {
     this.authService
       .sync()
-      .pipe(
-        this.loadingBarSrv.withLoading(),
-        takeUntil(this.destroy$))
+      .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.informer.success('Синхронизация упешна');
+          this.informer.success('Синхронизация успешна');
         },
         error: (err) => {
-          this.informer.error(err.message, err.title);
+          this.informer.error(err.message, 'Ошибка синхронизации');
         },
       });
   }
@@ -102,28 +104,26 @@ export class LoginComponent {
           clientID: this.loginForm.value.name,
           clientSecret: this.loginForm.value.secret,
           userID: null,
-        }
+        };
       case LoginType.WSA:
         req = {
           object_id: this.loginForm.value.name,
           wsa_token: this.loginForm.value.secret,
           userID: null,
-        }
+        };
     }
 
     if (!req) return;
 
     this.authService
       .login(req)
-      .pipe(
-        this.loadingBarSrv.withLoading(),
-        takeUntil(this.destroy$))
+      .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.informer.success('Авторизация упешна');
         },
         error: (err) => {
-          this.informer.error(err.message, err.title);
+          this.informer.error(err.message, 'Ошибка авторизации');
         },
       });
   }

@@ -44,7 +44,7 @@
         Войти
       </button>
 
-      <button mat-raised-button [disabled]="loading$ | async">
+      <button mat-raised-button [disabled]="loading$ | async" (click)="$event.stopPropagation(); onSync()">
         синхронизация
       </button>
     </mat-card-actions>
