@@ -57,7 +57,7 @@ export class AuthService implements OnDestroy {
   sync() {
     return this.http
       .post(
-        '/api/v1/back_office/setup_profile',
+        '/api/v1/back_office/synchronous_menu',
         {}
       )
   }
