@@ -1,0 +1,25 @@
+:host {
+  display: grid;
+  grid-template-rows: 64px auto;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav-wrapper {
+  height: 100%;
+  padding: 20px;
+}
+
+.content {
+  height: 100%;
+  padding: 20px;
+  background-color: var(--mat-sys-primary-container);
+}
+
+.all-grid {
+  grid-row: span 2;
+}

@@ -1,0 +1,41 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+}
+
+.card {
+  width: 600px;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+mat-card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mat-mdc-card-title {
+  margin-bottom: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.mat-mdc-card-actions {
+  gap: 15px;
+}
+
+.password-icon {
+  margin-right: 4px;
+}

@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+@use 'ngx-toastr/toastr';
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: mat.$orange-palette,
+
+    typography: Roboto,
+  ));
+}
+
+
+html * {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.display-none {
+  display: none;
+}

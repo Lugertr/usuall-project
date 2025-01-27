@@ -1,0 +1,54 @@
+<mat-card class="card">
+  <mat-card-title>Авторизация</mat-card-title>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-button-toggle-group formControlName="type" aria-label="Выберите тип">
+      <mat-button-toggle [value]="loginType.Delivery"
+        >Delivery</mat-button-toggle
+      >
+      <mat-button-toggle [value]="loginType.WSA">WSA</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Ваш {{ loginNameLabel }}</mat-label>
+      <input matInput formControlName="name" required autocomplete="on" />
+      @if (loginForm.controls.name.invalid) {
+      <mat-error>Введите корректный {{ loginNameLabel }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Введите {{ loginSecretLabel }}</mat-label>
+      <input
+        matInput
+        formControlName="secret"
+        [type]="hidePassword ? 'password' : 'text'"
+        required
+        autocomplete="on"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        class="password-icon"
+      >
+        <mat-icon>{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+      @if (loginForm.controls.secret.invalid) {
+      <mat-error>Введите корректный {{ loginSecretLabel }}</mat-error>
+      }
+    </mat-form-field>
+    <mat-card-actions align="end" class="full-width">
+      <button mat-flat-button color="primary" [disabled]="loading$ | async">
+        Войти
+      </button>
+
+      <button mat-raised-button [disabled]="loading$ | async">
+        синхронизация
+      </button>
+    </mat-card-actions>
+  </form>
+
+  <app-login-desc></app-login-desc>
+</mat-card>
