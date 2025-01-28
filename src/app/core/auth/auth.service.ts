@@ -57,7 +57,8 @@ export class AuthService implements OnDestroy {
   sync() {
     return this.http
       .post(
-        '/api/v1/back_office/synchronous_menu',
+        'http://api.dionis.cloud:8000/api/v1/back_office/synchronous_menu',
+        //'/api/v1/back_office/synchronous_menu',
         {}
       )
   }
@@ -65,7 +66,8 @@ export class AuthService implements OnDestroy {
   login(req: LoginDeliveryReq | LoginWSAReq) {
     return this.http
       .post(
-        '/api/v1/back_office/setup_profile',
+        'http://api.dionis.cloud:8000/api/v1/back_office/setup_profile',
+        //'/api/v1/back_office/setup_profile',
         req
       )
       .pipe(
