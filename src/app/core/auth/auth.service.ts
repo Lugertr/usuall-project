@@ -107,7 +107,10 @@ export class AuthService implements OnDestroy {
   private loadUserFromCookie(): void {
     const token = this.getToken();
     if (token) {
-      this.http.get('/api/auth/me').pipe(this.loadingBarSrv.withLoading() ,takeUntil(this.destroy$)).subscribe((user) => {
+      this.http.get(
+        'http://api.dionis.cloud:8000/api/auth/me'
+        //'/api/auth/me'
+      ).pipe(this.loadingBarSrv.withLoading() ,takeUntil(this.destroy$)).subscribe((user) => {
         this.user.set(user);
       });
     }
