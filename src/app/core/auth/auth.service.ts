@@ -127,7 +127,7 @@ export class AuthService implements OnDestroy {
       }
     });
     this.http
-      .get<StoreInfo>('/autologin', {
+      .get<StoreInfo>('http://api.dionis.cloud:8000/autologin', {
         params,
       }).pipe(this.loadingBarSrv.withLoading() ,
       catchError((err) => {

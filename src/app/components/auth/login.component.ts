@@ -17,6 +17,7 @@ import { DestroyService } from '@core/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginDescComponent } from './login-desc/login-desc.component';
 import { MatCardModule } from '@angular/material/card';
+import { environment } from 'src/environments/environment';
 
 enum LoginType {
   Delivery,
@@ -103,13 +104,13 @@ export class LoginComponent {
         req = {
           clientID: this.loginForm.value.name,
           clientSecret: this.loginForm.value.secret,
-          userID: null,
+          userID: `${environment.storeInfo.user_id}`,
         };
       case LoginType.WSA:
         req = {
           object_id: this.loginForm.value.name,
           wsa_token: this.loginForm.value.secret,
-          userID: null,
+          userID: `${environment.storeInfo.user_id}`,
         };
     }
 
