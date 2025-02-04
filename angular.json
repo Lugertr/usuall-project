@@ -20,6 +20,9 @@
             "outputPath": "dist/adm",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "allowedCommonJsDependencies": [
+              "dotenv"
+            ],
             "polyfills": [
               "zone.js"
             ],

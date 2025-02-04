@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 export const environment = {
   production: false,
   storeInfo: {
