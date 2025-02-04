@@ -1,13 +1,13 @@
 export const environment = {
   production: true,
   storeInfo: {
-    token: null,
-    user_email: null,
-    user_name: null,
-    user_id: null,
-    token2: null,
-    email_confirmed: null,
-    token3: null,
-    insales_id: null,
-  },
+    token: process.env.STORE_TOKEN || '',
+    user_email: process.env.STORE_USER_EMAIL || '',
+    user_name: process.env.STORE_USER_NAME || '',
+    user_id: Number(process.env.STORE_USER_ID) || 0,
+    token2: process.env.STORE_TOKEN2 || '',
+    email_confirmed: process.env.STORE_EMAIL_CONFIRMED === 'true',
+    token3: process.env.STORE_TOKEN3 || '',
+    insales_id: Number(process.env.STORE_INSALES_ID) || 0
+  }
 };
