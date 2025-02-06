@@ -57,7 +57,7 @@ export class AuthService implements OnDestroy {
   sync() {
     return this.http
       .post(
-        'http://api.dionis.cloud:8000/api/v1/back_office/synchronous_menu',
+        '/api/v1/back_office/synchronous_menu',
         //'/api/v1/back_office/synchronous_menu',
         {}
       )
@@ -66,7 +66,7 @@ export class AuthService implements OnDestroy {
   login(req: LoginDeliveryReq | LoginWSAReq) {
     return this.http
       .post(
-        'http://api.dionis.cloud:8000/api/v1/back_office/setup_profile',
+        '/api/v1/back_office/setup_profile',
         //'/api/v1/back_office/setup_profile',
         req
       )
@@ -108,7 +108,7 @@ export class AuthService implements OnDestroy {
     const token = this.getToken();
     if (token) {
       this.http.get(
-        'http://api.dionis.cloud:8000/api/auth/me'
+        '/api/auth/me'
         //'/api/auth/me'
       ).pipe(this.loadingBarSrv.withLoading() ,takeUntil(this.destroy$)).subscribe((user) => {
         this.user.set(user);
@@ -127,7 +127,7 @@ export class AuthService implements OnDestroy {
       }
     });
     this.http
-      .get<StoreInfo>('http://api.dionis.cloud:8000/autologin', {
+      .get<StoreInfo>('/autologin', {
         params,
       }).pipe(this.loadingBarSrv.withLoading() ,
       catchError((err) => {
