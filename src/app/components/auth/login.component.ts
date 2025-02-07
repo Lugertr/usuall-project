@@ -17,12 +17,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
 import { AsyncPipe } from '@angular/common';
-import { takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoginDescComponent } from './login-desc/login-desc.component';
 import { MatCardModule } from '@angular/material/card';
-import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 
 enum LoginType {
@@ -86,9 +85,9 @@ export class LoginComponent implements OnInit {
         return 'WSAToken';
     }
   }
-  
+
   ngOnInit(): void {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+    this.route.queryParamMap.pipe(take(1),takeUntil(this.destroy$)).subscribe((params) => {
       const insales_id = params.get('insales_id') || null;
       const shop = params.get('shop') || null;
       const user_email = params.get('user_email') || null;
