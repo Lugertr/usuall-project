@@ -86,7 +86,7 @@ export class AuthService implements OnDestroy {
   logout(): void {
     this.removeToken();
     this.user.set(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth']);
   }
 
   isAuthenticatedSignal(): Signal<boolean> {
