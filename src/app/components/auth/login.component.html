@@ -28,6 +28,7 @@
       <button
         mat-icon-button
         matSuffix
+        [disabled]="(loading$ | async) || loginForm.invalid"
         (click)="hidePassword = !hidePassword"
         class="password-icon"
       >

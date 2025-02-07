@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Signal, signal, computed } from '@angular/core';
@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { of, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
+import { RestHttpClient } from '@core/rest-http-client/rest-http-client.service';
 
 export interface LoginDeliveryReq {
   clientID: string;
@@ -27,17 +28,24 @@ export interface StoreInfo {
   shop_url: string;
 }
 
+export interface StoreloginReq {
+  insales_id: string,
+  shop: string,
+  user_email: string,
+  user_id: number,
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private http = inject(HttpClient);
+  private http = inject(RestHttpClient);
   private router = inject(Router);
   private cookieService = inject(CookieService);
   private loadingBarSrv = inject(LoadingBarService);
   private informer = inject(ToastrService);
 
-  private destroy$ = new Subject<void>
+  private destroy$ = new Subject<void>();
 
   private tokenKey = 'auth-token';
 
@@ -46,7 +54,6 @@ export class AuthService implements OnDestroy {
 
   constructor() {
     this.loadUserFromCookie();
-    this.loadStoreInfo();
   }
 
   ngOnDestroy(): void {
@@ -55,12 +62,11 @@ export class AuthService implements OnDestroy {
   }
 
   sync() {
-    return this.http
-      .post(
-        '/api/v1/back_office/synchronous_menu',
-        //'/api/v1/back_office/synchronous_menu',
-        {}
-      )
+    return this.http.post(
+      '/api/v1/back_office/synchronous_menu',
+      //'/api/v1/back_office/synchronous_menu',
+      {}
+    );
   }
 
   login(req: LoginDeliveryReq | LoginWSAReq) {
@@ -87,6 +93,36 @@ export class AuthService implements OnDestroy {
     return computed(() => !!this.user());
   }
 
+  loadStoreInfo(query: StoreloginReq): void {
+    let params = new HttpParams({
+      fromObject: {...query},
+    });
+    this.http
+      .get<StoreInfo>('/autologin', {
+        params,
+      })
+      .pipe(
+        this.loadingBarSrv.withLoading(),
+        catchError((error) => {
+          const err = error.error;
+          this.informer.error(err.message || err.detail || err);
+          let params = new HttpParams({
+            fromObject: {
+              user_email: environment.storeInfo.user_email,
+              user_id: environment.storeInfo.user_id,
+              insales_id: environment.storeInfo.insales_id,
+            },
+          });
+
+          return of(null);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((store) => {
+        this.storeInfo.set(store);
+      });
+  }
+
   private setToken(token: string): void {
     this.cookieService.set(this.tokenKey, token, {
       expires: 7, // Срок действия cookie (7 дней)
@@ -107,45 +143,15 @@ export class AuthService implements OnDestroy {
   private loadUserFromCookie(): void {
     const token = this.getToken();
     if (token) {
-      this.http.get(
-        '/api/auth/me'
-        //'/api/auth/me'
-      ).pipe(this.loadingBarSrv.withLoading() ,takeUntil(this.destroy$)).subscribe((user) => {
-        this.user.set(user);
-      });
-    }
-  }
-
-  private loadStoreInfo(): void {
-    let params = new HttpParams({
-      fromObject: {
-        token3: environment.storeInfo.token3,
-        user_email: environment.storeInfo.user_email,
-        user_name: environment.storeInfo.user_name,
-        user_id: environment.storeInfo.user_id,
-        email_confirmed: environment.storeInfo.email_confirmed
-      }
-    });
-    this.http
-      .get<StoreInfo>('/autologin', {
-        params,
-      }).pipe(this.loadingBarSrv.withLoading() ,
-      catchError((err) => {
-        this.informer.error(err.message || err.detail || err);
-        let params = new HttpParams({
-          fromObject: {
-            user_email: environment.storeInfo.user_email,
-            user_id: environment.storeInfo.user_id,
-            insales_id: environment.storeInfo.insales_id,
-
-          }
+      this.http
+        .get(
+          '/api/auth/me'
+          //'/api/auth/me'
+        )
+        .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
+        .subscribe((user) => {
+          this.user.set(user);
         });
-
-        return of(null);
-      }),
-      takeUntil(this.destroy$))
-      .subscribe((store) => {
-        this.storeInfo.set(store);
-      });
+    }
   }
 }

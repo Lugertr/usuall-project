@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginDescComponent } from './login-desc/login-desc.component';
 import { MatCardModule } from '@angular/material/card';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 
 enum LoginType {
   Delivery,
@@ -43,14 +50,16 @@ enum LoginType {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DestroyService],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private loadingBarSrv = inject(LoadingBarService);
   private destroy$ = inject(DestroyService);
   private informer = inject(ToastrService);
+  private route = Inject(ActivatedRoute);
 
   hidePassword = true;
+  private userId: number = null;
 
   loginForm = this.fb.group({
     type: [LoginType.Delivery, [Validators.required]],
@@ -60,7 +69,6 @@ export class LoginComponent {
 
   loginType = LoginType;
   loading$ = this.loadingBarSrv.show$;
-  error: string | null = null;
 
   get loginNameLabel() {
     switch (this.loginForm.value.type) {
@@ -78,6 +86,26 @@ export class LoginComponent {
       case LoginType.WSA:
         return 'WSAToken';
     }
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams
+      .takeUntil(this.loadingBarSrv.withLoading(), this.destroy$)
+      .subscribe((params) => {
+        const insales_id = params['insales_id'] || null;
+        const shop = params['shop'] || null;
+        const user_email = params['user_email'] || null;
+        const user_id = params['user_id'] || null;
+
+        this.userId = user_id;
+
+        this.authService.loadStoreInfo({
+          insales_id,
+          shop,
+          user_email,
+          user_id,
+        });
+      });
   }
 
   onSync(): void {
@@ -104,13 +132,13 @@ export class LoginComponent {
         req = {
           clientID: this.loginForm.value.name,
           clientSecret: this.loginForm.value.secret,
-          userID: `${environment.storeInfo.user_id}`,
+          userID: `${this.userId}`,
         };
       case LoginType.WSA:
         req = {
           object_id: this.loginForm.value.name,
           wsa_token: this.loginForm.value.secret,
-          userID: `${environment.storeInfo.user_id}`,
+          userID: `${this.userId}`,
         };
     }
 

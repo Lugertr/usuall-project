@@ -4,7 +4,7 @@ module.exports = {
     secure: false,
     changeOrigin: true,
   },
-  "/autologin": {
+  "/login": {
     target: "http://api.dionis.cloud:8000/",
     secure: false,
     changeOrigin: true,
