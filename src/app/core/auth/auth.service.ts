@@ -98,7 +98,7 @@ export class AuthService implements OnDestroy {
       fromObject: {...query},
     });
     this.http
-      .get<StoreInfo>('/autologin', {
+      .get<StoreInfo>('/login', {
         params,
       })
       .pipe(
