@@ -13,7 +13,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       catchError((err: any) => {
         if (err instanceof HttpErrorResponse && err.status === 401) {
           setTimeout(() => {
-            window.location.replace(`${this.baseHref || '/'}login`);
+            window.location.replace(`${this.baseHref || '/'}auth`);
           }, 0);
         }
         return throwError(err);
