@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Inject,
   inject,
   OnInit,
 } from '@angular/core';
@@ -56,7 +55,7 @@ export class LoginComponent implements OnInit {
   private loadingBarSrv = inject(LoadingBarService);
   private destroy$ = inject(DestroyService);
   private informer = inject(ToastrService);
-  private route = Inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
 
   hidePassword = true;
   private userId: number = null;
@@ -87,25 +86,24 @@ export class LoginComponent implements OnInit {
         return 'WSAToken';
     }
   }
-
+  
   ngOnInit(): void {
-    this.route.queryParams
-      .takeUntil(this.loadingBarSrv.withLoading(), this.destroy$)
-      .subscribe((params) => {
-        const insales_id = params['insales_id'] || null;
-        const shop = params['shop'] || null;
-        const user_email = params['user_email'] || null;
-        const user_id = params['user_id'] || null;
-
-        this.userId = user_id;
-
-        this.authService.loadStoreInfo({
-          insales_id,
-          shop,
-          user_email,
-          user_id,
-        });
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const insales_id = params.get('insales_id') || null;
+      const shop = params.get('shop') || null;
+      const user_email = params.get('user_email') || null;
+      const user_id = Number(params.get('user_id')) || null;
+      console.log(user_id);
+      console.log(params);
+      console.log('test');
+      this.userId = user_id;
+      this.authService.loadStoreInfo({
+        insales_id,
+        shop,
+        user_email,
+        user_id,
       });
+    })
   }
 
   onSync(): void {

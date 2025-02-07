@@ -11,15 +11,15 @@ import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
 import { RestHttpClient } from '@core/rest-http-client/rest-http-client.service';
 
 export interface LoginDeliveryReq {
-  client_id: string;
-  client_secret: string;
-  user_id: string;
+  clientID: string;
+  clientSecret: string;
+  userID: string;
 }
 
 export interface LoginWSAReq {
   object_id: string;
   wsa_token: string;
-  user_id: string;
+  userID: string;
 }
 
 export interface StoreInfo {
