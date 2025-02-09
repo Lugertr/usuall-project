@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '@core/auth/auth.service';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AuthService } from '@core/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,8 +22,8 @@ export class NavBarComponent {
   @Input() menuToggleSignal = signal(() => {});
   authService = inject(AuthService);
 
-  logout(): void {
-    this.authService.logout();
+  logout(username: string): void {
+    this.authService.logout(username);
   }
 
   callMenuTrigger(): void {

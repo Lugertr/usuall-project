@@ -38,6 +38,21 @@ export class RestHttpClient {
       .pipe(this.processResponse(options?.catchMultipleErrors));
   }
 
+  patch<T>(
+    url: string,
+    body: unknown | null,
+    options?: {
+      headers?: HttpHeaders | Record<string, string | string[]>;
+      context?: HttpContext;
+      params?: HttpParams | Record<string, string | string[]>;
+      catchMultipleErrors?: boolean;
+    },
+  ): Observable<T> {
+    return this.http
+      .patch<ServerBody<T>>(url, body, { ...options, observe: 'response' })
+      .pipe(this.processResponse(options?.catchMultipleErrors));
+  }
+
   private processResponse<T>(multiple?: boolean): (resp: Observable<HttpResponse<ServerBody<T>>>) => Observable<T> {
     return resp =>
       resp.pipe(

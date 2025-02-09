@@ -10,10 +10,20 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrModule } from 'ngx-toastr';
 import { PlatformLocation, APP_BASE_HREF } from '@angular/common';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
 import { AuthHttpInterceptor } from './core/auth/auth-http-interceptor';
+import { provideStore, StoreModule } from '@ngrx/store';
+import { authReducer } from './store/auth/auth.reducer';
+import { AuthEffects } from './store/auth/auth.effects';
+import { EffectsModule } from '@ngrx/effects';
 
-export const getBaseHref: (plSrv: PlatformLocation) => string = (plSrv: PlatformLocation) => plSrv.getBaseHrefFromDOM();
+export const getBaseHref: (plSrv: PlatformLocation) => string = (
+  plSrv: PlatformLocation
+) => plSrv.getBaseHrefFromDOM();
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +35,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    importProvidersFrom(ToastrModule.forRoot()),
+    importProvidersFrom(
+      ToastrModule.forRoot(),
+      StoreModule.forRoot({ auth: authReducer }),
+      EffectsModule.forRoot([AuthEffects])
+    ),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpInterceptor,
@@ -34,5 +48,6 @@ export const appConfig: ApplicationConfig = {
     },
     provideHttpClient(withFetch()),
     CookieService,
+    provideStore(),
   ],
 };
