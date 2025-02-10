@@ -1,10 +1,10 @@
 <app-loading-bar></app-loading-bar>
 
 @if (isAuthenticated()) {
-  <app-navbar  [menuToggleSignal]="menuToggleSignal"></app-navbar>}
+  <app-navbar  (menuToggle)="sideNavToggle()"></app-navbar>}
 
 <mat-sidenav-container class="sidenav-container" [class.all-grid]="!isAuthenticated()">
-  <mat-sidenav #sidenav mode="side" [opened]="isShowingMenu">
+  <mat-sidenav mode="side" [(opened)]="isShowingMenu">
     <div class="sidenav-wrapper">
       <mat-card class="full-height">
         <mat-nav-list class="sidenav-routes">

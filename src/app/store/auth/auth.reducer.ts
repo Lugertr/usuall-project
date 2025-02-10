@@ -1,44 +1,37 @@
 import { createReducer, on } from '@ngrx/store';
-import { login, logout, loadUsersFromCookies, setStoreInfo } from './auth.actions';
-import { CookieService } from 'ngx-cookie-service';
-import { StoreInfo, User } from 'src/app/models/auth';
-
-export interface AuthState {
-  users: User[];
-  storeInfo: StoreInfo | null;
-}
+import { loadUser, loadUserFailure, loadUserSuccess, setToken } from './auth.actions';
+import { AuthState } from 'src/app/models/auth';
 
 const initialState: AuthState = {
-  users: [],
-  storeInfo: null
+  token: null,
+  user: null,
+  loading: false,
+  error: null
 };
-
-function getUsersFromCookies(): User[] {
-  const cookieService = new CookieService(document, document.cookie);
-  const users = cookieService.get('loggedUsers');
-  return users ? JSON.parse(users) : [];
-}
-
-function saveUsersToCookies(users: User[]): void {
-  const cookieService = new CookieService(document, document.cookie);
-  cookieService.set('loggedUsers', JSON.stringify(users), 1, '/');
-}
 
 export const authReducer = createReducer(
   initialState,
-  on(loadUsersFromCookies, state => ({ ...state, users: getUsersFromCookies() })),
-  on(login, (state, { user }) => {
-    const users = [...state.users, user];
-    saveUsersToCookies(users);
-    return { ...state, users };
-  }),
-  on(logout, (state, { username }) => {
-    const users = state.users.filter(u => u.username !== username);
-    saveUsersToCookies(users);
-    return { ...state, users };
-  }),
-  on(setStoreInfo, (state, { storeInfo }) => ({
+
+  on(setToken, (state, { token }) => ({
     ...state,
-    storeInfo
+    token
+  })),
+
+  on(loadUser, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+
+  on(loadUserSuccess, (state, { user }) => ({
+    ...state,
+    loading: false,
+    user
+  })),
+
+  on(loadUserFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error
   }))
 );

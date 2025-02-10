@@ -16,10 +16,10 @@ import {
   withFetch,
 } from '@angular/common/http';
 import { AuthHttpInterceptor } from './core/auth/auth-http-interceptor';
-import { provideStore, StoreModule } from '@ngrx/store';
+import { provideStore } from '@ngrx/store';
 import { authReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
-import { EffectsModule } from '@ngrx/effects';
+import { provideEffects } from '@ngrx/effects';
 
 export const getBaseHref: (plSrv: PlatformLocation) => string = (
   plSrv: PlatformLocation
@@ -35,10 +35,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideStore({ auth: authReducer }),
+    provideEffects(AuthEffects),
     importProvidersFrom(
       ToastrModule.forRoot(),
-      StoreModule.forRoot({ auth: authReducer }),
-      EffectsModule.forRoot([AuthEffects])
     ),
     {
       provide: HTTP_INTERCEPTORS,
@@ -48,6 +48,5 @@ export const appConfig: ApplicationConfig = {
     },
     provideHttpClient(withFetch()),
     CookieService,
-    provideStore(),
-  ],
+    ],
 };

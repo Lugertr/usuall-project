@@ -1,13 +1,20 @@
-export interface StoreInfo {
-  shop: number;
-  insales_id: string;
-  user_email: string;
-  user_id: number;
-}
-
 export interface User {
-    username: string,
-    password: string
+  id: number;
+  email: string;
+  is_active: boolean;
+  is_superuser: boolean;
+  is_verified: boolean;
+  role: string;
+  shop_url: string;
+  insales_id: number;
+  is_synchronous: boolean;
+  is_custom_field_added: boolean;
+  export_type: number;
 }
 
-export type JWT = string
+export interface AuthState {
+  token: string | null;
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+}

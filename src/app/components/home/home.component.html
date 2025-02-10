@@ -1,1 +1,10 @@
 <div>MainPage</div>
+@let data = user() | async;
+
+@if (data) {
+  {{data.id}}
+  {{data.email}}
+  {{data.role}}
+  {{data.shop_url}}
+}
+

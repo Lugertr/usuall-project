@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '@core/auth/auth.service';
+import {MatMenuModule} from '@angular/material/menu';
+import { ProfileComponent } from '../profile/profile.component';
 
 @Component({
   selector: 'app-navbar',
@@ -12,21 +14,23 @@ import { AuthService } from '@core/auth/auth.service';
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatMenuModule,
+    ProfileComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavBarComponent {
-  @Input() menuToggleSignal = signal(() => {});
+  @Output() menuToggle: EventEmitter<void> = new EventEmitter();
   authService = inject(AuthService);
 
-  logout(username: string): void {
-    this.authService.logout(username);
+  logout(): void {
+    this.authService.logout();
   }
 
   callMenuTrigger(): void {
-    this.menuToggleSignal()();
+    this.menuToggle.emit();
   }
 }

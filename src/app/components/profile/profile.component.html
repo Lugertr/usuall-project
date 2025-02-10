@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-title>Пользователь</mat-card-title>
+
+  <form [formGroup]="userForm" class="form">
+    <div class="form-fields">
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Роль</mat-label>
+        <input matInput formControlName="role" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Магазин</mat-label>
+        <input matInput formControlName="shop_url" />
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="toggleEdit()">
+      {{ isEditing() ? "Сохранить" : "Редактировать" }}
+    </button>
+  </form>
+</mat-card>

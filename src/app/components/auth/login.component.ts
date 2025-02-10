@@ -49,7 +49,7 @@ export class LoginComponent {
   private destroy$ = inject(DestroyService);
   private informer = inject(ToastrService);
 
-  err = false;
+  err = true;
   hidePassword = true;
   private userId: number = null;
 
@@ -62,7 +62,7 @@ export class LoginComponent {
   loginType = LoginType;
   loading$ = this.loadingBarSrv.show$;
 
-  get loginNameLabel() {
+  get loginNameLabel(): string {
     switch (this.loginForm.value.type) {
       case LoginType.Delivery:
         return 'ClientId';
@@ -71,7 +71,7 @@ export class LoginComponent {
     }
   }
 
-  get loginSecretLabel() {
+  get loginSecretLabel(): string {
     switch (this.loginForm.value.type) {
       case LoginType.Delivery:
         return 'ClientSecret';
@@ -81,6 +81,7 @@ export class LoginComponent {
   }
 
   onSync(): void {
+    return;
     this.authService
       .sync()
       .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
@@ -92,6 +93,7 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+    return;
     if (this.loginForm.invalid) return;
 
     const { type, name, secret } = this.loginForm.value;
@@ -102,7 +104,7 @@ export class LoginComponent {
         : { object_id: name, wsa_token: secret, userID: `${this.userId}` };
 
         this.authService
-        .login(req)
+        .sync(req)
         .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
         .subscribe({
           next: () => {
