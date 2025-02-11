@@ -1,12 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadUser, loadUserFailure, loadUserSuccess, setToken } from './auth.actions';
+import {
+  loadUser,
+  loadUserFailure,
+  loadUserSuccess,
+  setToken,
+  updateUser,
+  updateUserFailure,
+  updateUserSuccess,
+} from './auth.actions';
 import { AuthState } from 'src/app/models/auth';
 
 const initialState: AuthState = {
   token: null,
   user: null,
   loading: false,
-  error: null
+  error: null,
 };
 
 export const authReducer = createReducer(
@@ -14,24 +22,16 @@ export const authReducer = createReducer(
 
   on(setToken, (state, { token }) => ({
     ...state,
-    token
+    token,
   })),
 
-  on(loadUser, (state) => ({
-    ...state,
-    loading: true,
-    error: null
-  })),
 
-  on(loadUserSuccess, (state, { user }) => ({
-    ...state,
-    loading: false,
-    user
-  })),
+  on(loadUser, (state) => ({ ...state, loading: true, error: null })),
+  on(loadUserSuccess, (state, { user }) => ({ ...state, user, loading: false })),
+  on(loadUserFailure, (state, { error }) => ({ ...state, error, loading: false })),
 
-  on(loadUserFailure, (state, { error }) => ({
-    ...state,
-    loading: false,
-    error
-  }))
+
+  on(updateUser, (state) => ({ ...state, loading: true, error: null })),
+  on(updateUserSuccess, (state, { user }) => ({ ...state, user, loading: false })),
+  on(updateUserFailure, (state, { error }) => ({ ...state, error, loading: false }))
 );

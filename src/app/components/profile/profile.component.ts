@@ -15,8 +15,11 @@ import { MatCardModule } from '@angular/material/card';
 import { User } from 'src/app/models/auth';
 import { Store } from '@ngrx/store';
 import { selectUser } from 'src/app/store/auth/auth.selectors';
-import { Observable } from 'rxjs';
-import { loadUserSuccess } from 'src/app/store/auth/auth.actions';
+import { takeUntil } from 'rxjs';
+import { AuthService } from '@core/auth/auth.service';
+import { DestroyService } from '@core/services/destroy.service';
+import { ToastrService } from 'ngx-toastr';
+import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,13 +33,18 @@ import { loadUserSuccess } from 'src/app/store/auth/auth.actions';
     MatButtonModule,
     MatCardModule,
   ],
+  providers: [DestroyService],
 })
 export class ProfileComponent implements OnInit {
   private store = inject(Store);
+  private authSrv = inject(AuthService);
+  private destroy = inject(DestroyService);
+  private informer = inject(ToastrService);
+  private loadingBarSrv = inject(LoadingBarService);
 
   user: Signal<User> = computed(() => {
     let userData: User | null = null;
-    this.store.select(selectUser).subscribe(user => userData = user);
+    this.store.select(selectUser).subscribe((user) => (userData = user));
     return userData;
   });
 
@@ -49,15 +57,18 @@ export class ProfileComponent implements OnInit {
   isEditing: WritableSignal<boolean> = signal(false);
 
   ngOnInit(): void {
-    this.store.select(selectUser).subscribe(user => {
-      if (user) {
-        this.userForm.patchValue({
-          email: user.email,
-          role: user.role,
-          shop_url: user.shop_url
-        });
-      }
-    });
+    this.store
+      .select(selectUser)
+      .pipe(takeUntil(this.destroy))
+      .subscribe((user) => {
+        if (user) {
+          this.userForm.patchValue({
+            email: user.email,
+            role: user.role,
+            shop_url: user.shop_url,
+          });
+        }
+      });
   }
 
   toggleEdit(): void {
@@ -75,8 +86,17 @@ export class ProfileComponent implements OnInit {
   saveChanges(): void {
     if (!this.userForm.invalid && this.user()) {
       const updatedUser = { ...this.user(), ...this.userForm.value };
-      this.store.dispatch(loadUserSuccess({ user: updatedUser }));
-      console.log('Данные сохранены:', updatedUser);
+      this.authSrv
+        .updUser(updatedUser)
+        .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy))
+        .subscribe({
+          next: () => {
+            this.informer.success('Данные успешно изменены');
+          },
+          error: (err) => {
+            this.informer.error(err);
+          },
+        });
     }
   }
 }

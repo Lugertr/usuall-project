@@ -28,6 +28,7 @@ export class AuthService {
   private router = inject(Router);
 
   getUser(): Observable<User> {
+    return this.http.get<User>('/api/auth/users/me');
     return of({
       id: 1,
       email: 'user@example.com',
@@ -42,10 +43,10 @@ export class AuthService {
       export_type: 0
     });
 
-    return this.http.get<User>('/api/auth/users/me');
   }
 
   updUser(user: User): Observable<User> {
+    return this.http.patch<User>('/api/auth/users/me', user)
     return of(user);
   }
 
