@@ -1,12 +1,51 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from 'src/app/models/auth';
+import { Shop, User } from 'src/app/models/auth';
 
-export const setToken = createAction('[Auth] Set Token', props<{ token: string }>());
+export const setShopToken = createAction(
+  '[Auth] Set Shop Token',
+  props<{ shopToken: string }>()
+);
 
-export const loadUser = createAction('[Auth] Load User');
-export const loadUserSuccess = createAction('[Auth] Load User Success', props<{ user: User }>());
-export const loadUserFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
+export const loadShop = createAction('[Auth] Load Shop');
+export const loadShopSuccess = createAction(
+  '[Auth] Load Shop Success',
+  props<{ shop: Shop }>()
+);
+export const loadShopFailure = createAction(
+  '[Auth] Load Shop Failure',
+  props<{ error: string }>()
+);
 
-export const updateUser = createAction('[Auth] Update User', props<{ user: User }>());
-export const updateUserSuccess = createAction('[Auth] Update User Success', props<{ user: User }>());
-export const updateUserFailure = createAction('[Auth] Update User Failure', props<{ error: string }>());
+export const updateShop = createAction(
+  '[Auth] Update Shop',
+  props<{ shop: Shop }>()
+);
+export const updateShopSuccess = createAction(
+  '[Auth] Update Shop Success',
+  props<{ shop: Shop }>()
+);
+export const updateShopFailure = createAction(
+  '[Auth] Update Shop Failure',
+  props<{ error: string }>()
+);
+
+export const addAuthorizedUser = createAction(
+  '[Auth] Add Authorized User',
+  props<{ user: User }>()
+);
+export const setCurrentUser = createAction(
+  '[Auth] Set Current User',
+  props<{ user: User }>()
+);
+export const removeAuthorizedUser = createAction(
+  '[Auth] Remove Authorized User',
+  props<{ userId: string }>()
+);
+export const removeAuthorizedUserSuccess = createAction(
+  '[Auth] Remove Authorized User Success',
+  props<{ userId: string }>()
+);
+export const removeAuthorizedUserFailure = createAction(
+  '[Auth] Remove Authorized User Failure',
+  props<{ error: string }>()
+);

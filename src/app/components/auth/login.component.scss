@@ -37,6 +37,7 @@ mat-card-title {
 }
 
 .password-icon {
+  cursor: pointer;
   margin-right: 4px;
 }
 
@@ -49,8 +50,8 @@ mat-card-title {
   width: fit-content;
   padding: 20px;
   border-radius: 12px;
-  background-color: red;
-  color: white;
+  background-color: var(--mat-sys-surface-tint);
+  color: var(--mat-sys-on-error);
   width: fit-content;
 
   h1 {

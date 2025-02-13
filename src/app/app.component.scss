@@ -8,13 +8,19 @@
 
 .sidenav-container {
   height: 100%;
+  background-color: var(--mat-sys-background);
 }
 
 .sidenav-wrapper {
   border-radius: none;
   height: 100%;
   padding: 20px;
-  background-color: var(--mat-sys-primary-container);
+  background-color: var(--mat-sys-background);
+}
+
+.mat-mdc-card {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-primary);
 }
 
 .mat-drawer-side {
@@ -25,9 +31,21 @@
 .content {
   height: 100%;
   padding: 20px;
-  background-color: var(--mat-sys-primary-container);
+  background-color: var(--mat-sys-background);
 }
 
 .all-grid {
   grid-row: span 2;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item {
+  border-radius: 0;
+}
+
+.sidenav-routes-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 0;
 }

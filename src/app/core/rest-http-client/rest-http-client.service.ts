@@ -1,7 +1,17 @@
-import { HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse, HttpStatusCode } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpContext,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+  HttpStatusCode,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map } from 'rxjs';
-import { handleRestHttpError, handleRestHttpMultipleErrors } from './rest-error-handlers';
+import {
+  handleRestHttpError,
+  handleRestHttpMultipleErrors,
+} from './rest-error-handlers';
 
 interface ServerBody<T> {
   data?: T;
@@ -18,9 +28,11 @@ export class RestHttpClient {
       context?: HttpContext;
       params?: HttpParams | Record<string, string | string[]>;
       catchMultipleErrors?: boolean;
-    },
+    }
   ): Observable<T> {
-    return this.http.get<ServerBody<T>>(url, { ...options, observe: 'response' }).pipe(this.processResponse(options?.catchMultipleErrors));
+    return this.http
+      .get<ServerBody<T>>(url, { ...options, observe: 'response' })
+      .pipe(this.processResponse(options?.catchMultipleErrors));
   }
 
   post<T>(
@@ -31,7 +43,7 @@ export class RestHttpClient {
       context?: HttpContext;
       params?: HttpParams | Record<string, string | string[]>;
       catchMultipleErrors?: boolean;
-    },
+    }
   ): Observable<T> {
     return this.http
       .post<ServerBody<T>>(url, body, { ...options, observe: 'response' })
@@ -46,28 +58,35 @@ export class RestHttpClient {
       context?: HttpContext;
       params?: HttpParams | Record<string, string | string[]>;
       catchMultipleErrors?: boolean;
-    },
+    }
   ): Observable<T> {
     return this.http
       .patch<ServerBody<T>>(url, body, { ...options, observe: 'response' })
       .pipe(this.processResponse(options?.catchMultipleErrors));
   }
 
-  private processResponse<T>(multiple?: boolean): (resp: Observable<HttpResponse<ServerBody<T>>>) => Observable<T> {
-    return resp =>
+  private processResponse<T>(
+    multiple?: boolean
+  ): (resp: Observable<HttpResponse<ServerBody<T>>>) => Observable<T> {
+    return (resp) =>
       resp.pipe(
-        map(res => {
+        map((res) => {
           if (res.status === HttpStatusCode.NoContent) {
             return null;
           }
 
-          if (res.body instanceof Object && Object.prototype.hasOwnProperty.call(res.body, 'data')) {
+          if (
+            res.body instanceof Object &&
+            Object.prototype.hasOwnProperty.call(res.body, 'data')
+          ) {
             return res.body.data;
           }
 
           return (res.body as T) || null;
         }),
-        catchError(multiple ? handleRestHttpMultipleErrors : handleRestHttpError),
+        catchError(
+          multiple ? handleRestHttpMultipleErrors : handleRestHttpError
+        )
       );
   }
 }

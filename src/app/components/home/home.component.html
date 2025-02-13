@@ -1,10 +1,15 @@
 <div>MainPage</div>
-@let data = user() | async;
+@let data = shop() | async;
 
 @if (data) {
   {{data.id}}
+  <br/>
   {{data.email}}
+  <br/>
+
   {{data.role}}
+  <br/>
+
   {{data.shop_url}}
 }
 

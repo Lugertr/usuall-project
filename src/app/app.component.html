@@ -1,15 +1,15 @@
 <app-loading-bar></app-loading-bar>
 
-@if (isAuthenticated()) {
+@if (showNav) {
   <app-navbar  (menuToggle)="sideNavToggle()"></app-navbar>}
 
-<mat-sidenav-container class="sidenav-container" [class.all-grid]="!isAuthenticated()">
+<mat-sidenav-container class="sidenav-container" [class.all-grid]="!showNav">
   <mat-sidenav mode="side" [(opened)]="isShowingMenu">
     <div class="sidenav-wrapper">
       <mat-card class="full-height">
-        <mat-nav-list class="sidenav-routes">
+        <mat-nav-list>
           @for (link of navLinks; track link) {
-          <a mat-list-item [routerLink]="link.path">{{ link.label }}</a>
+          <a mat-button class="sidenav-routes-item" [routerLink]="link.path">{{ link.label }}</a>
           }
         </mat-nav-list>
       </mat-card>

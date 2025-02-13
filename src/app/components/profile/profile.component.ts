@@ -1,9 +1,7 @@
 import {
   Component,
-  computed,
   inject,
   OnInit,
-  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -12,14 +10,14 @@ import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { User } from 'src/app/models/auth';
+import { Shop } from 'src/app/models/auth';
 import { Store } from '@ngrx/store';
-import { selectUser } from 'src/app/store/auth/auth.selectors';
+import { selectShop } from 'src/app/store/auth/auth.selectors';
 import { takeUntil } from 'rxjs';
 import { AuthService } from '@core/auth/auth.service';
 import { DestroyService } from '@core/services/destroy.service';
-import { ToastrService } from 'ngx-toastr';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
+import { InformerService } from '@core/services/informer.service';
 
 @Component({
   selector: 'app-profile',
@@ -39,14 +37,8 @@ export class ProfileComponent implements OnInit {
   private store = inject(Store);
   private authSrv = inject(AuthService);
   private destroy = inject(DestroyService);
-  private informer = inject(ToastrService);
+  private informer = inject(InformerService);
   private loadingBarSrv = inject(LoadingBarService);
-
-  user: Signal<User> = computed(() => {
-    let userData: User | null = null;
-    this.store.select(selectUser).subscribe((user) => (userData = user));
-    return userData;
-  });
 
   userForm = new FormGroup({
     email: new FormControl({ value: '', disabled: true }),
@@ -56,16 +48,20 @@ export class ProfileComponent implements OnInit {
 
   isEditing: WritableSignal<boolean> = signal(false);
 
+  private shop: Shop = null;
+
   ngOnInit(): void {
     this.store
-      .select(selectUser)
+      .select(selectShop)
       .pipe(takeUntil(this.destroy))
-      .subscribe((user) => {
-        if (user) {
+      .subscribe((shop) => {
+        this.shop = shop || null;
+
+        if (shop) {
           this.userForm.patchValue({
-            email: user.email,
-            role: user.role,
-            shop_url: user.shop_url,
+            email: shop.email,
+            role: shop.role,
+            shop_url: shop.shop_url,
           });
         }
       });
@@ -84,10 +80,10 @@ export class ProfileComponent implements OnInit {
   }
 
   saveChanges(): void {
-    if (!this.userForm.invalid && this.user()) {
-      const updatedUser = { ...this.user(), ...this.userForm.value };
+    if (!this.userForm.invalid && this.shop) {
+      const updatedShop = { ...this.shop, ...this.userForm.value };
       this.authSrv
-        .updUser(updatedUser)
+        .updShop(updatedShop)
         .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy))
         .subscribe({
           next: () => {

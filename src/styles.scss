@@ -1,20 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @use "ngx-toastr/toastr";
-@use "@angular/material" as mat;
-
-html {
-  color-scheme: light;
-  @include mat.theme(
-    (
-      color: mat.$orange-palette,
-
-      typography: Roboto,
-    )
-  );
-}
+@use "styles/themes.scss";
 
 html * {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   box-sizing: border-box;
 }
 
@@ -23,6 +11,7 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 body {
@@ -39,6 +28,14 @@ body {
 
 .display-none {
   display: none;
+}
+
+.visibility-none {
+  visibility: hidden;
+}
+
+.mdc-list-item__primary-text {
+  color: inherit;
 }
 
 .mat-menu-custom.mat-mdc-menu-panel {

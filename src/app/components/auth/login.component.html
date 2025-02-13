@@ -1,66 +1,67 @@
-@if (!err) {
-  <mat-card class="card">
-    <mat-card-title>Авторизация</mat-card-title>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
-      <mat-button-toggle-group formControlName="type" aria-label="Выберите тип">
-        <mat-button-toggle [value]="loginType.Delivery"
-          >Delivery</mat-button-toggle
-        >
-        <mat-button-toggle [value]="loginType.WSA">WSA</mat-button-toggle>
-      </mat-button-toggle-group>
+@if (hasShopToken) {
+<mat-card class="card">
+  <mat-card-title>Авторизация</mat-card-title>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-button-toggle-group formControlName="type" aria-label="Выберите тип">
+      <mat-button-toggle [value]="loginType.Delivery"
+        >Delivery</mat-button-toggle
+      >
+      <mat-button-toggle [value]="loginType.WSA">WSA</mat-button-toggle>
+    </mat-button-toggle-group>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Ваш {{ loginNameLabel }}</mat-label>
-        <input matInput formControlName="name" required autocomplete="on" />
-        @if (loginForm.controls.name.invalid) {
-        <mat-error>Введите корректный {{ loginNameLabel }}</mat-error>
-        }
-      </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Ваш {{ loginNameLabel }}</mat-label>
+      <input matInput formControlName="name" required autocomplete="on" />
+      @if (loginForm.controls.name.invalid) {
+      <mat-error>Введите корректный {{ loginNameLabel }}</mat-error>
+      }
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Введите {{ loginSecretLabel }}</mat-label>
-        <input
-          matInput
-          formControlName="secret"
-          [type]="hidePassword ? 'password' : 'text'"
-          required
-          autocomplete="on"
-        />
-        <button
-          mat-icon-button
-          matSuffix
-          [disabled]="(loading$ | async) || loginForm.invalid"
-          (click)="hidePassword = !hidePassword"
-          class="password-icon"
-        >
-          <mat-icon>{{
-            hidePassword ? "visibility_off" : "visibility"
-          }}</mat-icon>
-        </button>
-        @if (loginForm.controls.secret.invalid) {
-        <mat-error>Введите корректный {{ loginSecretLabel }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-card-actions align="end" class="full-width">
-        <button mat-flat-button color="primary" [disabled]="loading$ | async">
-          Войти
-        </button>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Введите {{ loginSecretLabel }}</mat-label>
+      <input
+        matInput
+        formControlName="secret"
+        [type]="hidePassword ? 'password' : 'text'"
+        required
+        autocomplete="on"
+      />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        [disabled]="(loading$ | async) || loginForm.invalid"
+        (click)="hidePassword = !hidePassword"
+        class="password-icon"
+      >
+        <mat-icon>{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+      @if (loginForm.controls.secret.invalid) {
+      <mat-error>Введите корректный {{ loginSecretLabel }}</mat-error>
+      }
+    </mat-form-field>
+    <mat-card-actions align="end" class="full-width">
+      <button mat-flat-button color="primary" [disabled]="loading$ | async">
+        Войти
+      </button>
 
-        <button
-          mat-raised-button
-          [disabled]="loading$ | async"
-          (click)="$event.preventDefault(); onSync()"
-        >
-          синхронизация
-        </button>
-      </mat-card-actions>
-    </form>
+      <button
+        mat-raised-button type="button"
+        [disabled]="loading$ | async"
+        (click)="onSync()"
+      >
+        синхронизация
+      </button>
+    </mat-card-actions>
+  </form>
 
-    <app-login-desc></app-login-desc>
-  </mat-card>
+  <app-login-desc></app-login-desc>
+</mat-card>
 } @else {
-  <div class="error">
-    <h1>Ошибка!</h1>
-    <span>Не удалось подключиться к Insales</span>
-  </div>
+<div class="error">
+  <h1>Ошибка!</h1>
+  <span>Не удалось подключиться к Insales</span>
+</div>
 }

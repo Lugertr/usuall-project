@@ -1,9 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/models/auth';
-import { selectUser } from 'src/app/store/auth/auth.selectors';
+import { Shop } from 'src/app/models/auth';
+import { selectShop } from 'src/app/store/auth/auth.selectors';
 
 @Component({
   templateUrl: './home.component.html',
@@ -15,7 +15,7 @@ import { selectUser } from 'src/app/store/auth/auth.selectors';
 export class HomeComponent {
   private store = inject(Store);
 
-    user: WritableSignal<Observable<User>> = signal(
-      this.store.select(selectUser)
+    shop: WritableSignal<Observable<Shop>> = signal(
+      this.store.select(selectShop)
     );
 }

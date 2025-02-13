@@ -1,12 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AuthService } from '@core/auth/auth.service';
-import { loadUser, loadUserFailure, loadUserSuccess, updateUser, updateUserFailure, updateUserSuccess } from './auth.actions';
-import { selectToken } from './auth.selectors';
+import {
+  loadShop,
+  loadShopFailure,
+  loadShopSuccess,
+  removeAuthorizedUser,
+  removeAuthorizedUserFailure,
+  removeAuthorizedUserSuccess,
+  updateShop,
+  updateShopFailure,
+  updateShopSuccess,
+} from './auth.actions';
+import { selectShopToken } from './auth.selectors';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
+import { CurRoutes } from 'src/app/app.routes';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -14,40 +32,66 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private store: Store,
-    private loadingBarSrv: LoadingBarService
+    private loadingBarSrv: LoadingBarService,
+    private router: Router
   ) {}
 
-  loadUser$ = createEffect(() =>
+  loadShop$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadUser),
-      withLatestFrom(this.store.select(selectToken)),
+      ofType(loadShop),
+      withLatestFrom(this.store.select(selectShopToken)),
       switchMap(([_, token]) => {
-        if (!token) return of(loadUserFailure({ error: 'No token' }));
-        return this.authService.getUser().pipe(
-          map((user) => loadUserSuccess({ user })),
-          catchError((error) => of(loadUserFailure({ error: error.message })))
+        console.log(!token);
+        if (!token) return of(loadShopFailure({ error: 'No token' }));
+        return this.authService.getShop().pipe(
+          this.loadingBarSrv.withLoading(),
+          map((shop) => {
+            if (shop) {
+              return loadShopSuccess({ shop });
+            }
+            return loadShopFailure({ error: 'shop is empty' });
+          }),
+          catchError((error) => {
+            return of(loadShopFailure({ error: error }));
+          })
         );
       })
     )
   );
 
-  updateUser$ = createEffect(() =>
+  updateShop$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUser),
-      switchMap(({ user }) =>
-        this.authService.updUser(user).pipe(
+      ofType(updateShop),
+      switchMap(({ shop }) =>
+        this.authService.updShop(shop).pipe(
           this.loadingBarSrv.withLoading(),
-          map((updatedUser) => updateUserSuccess({ user: updatedUser })),
-          catchError((error) => of(updateUserFailure({ error: error.message })))
+          map((updatedShop) => updateShopSuccess({ shop: updatedShop })),
+          catchError((error) => of(updateShopFailure({ error: error.message })))
         )
       )
     )
   );
 
-  reloadUserAfterUpdate$ = createEffect(() =>
+  reloadShopAfterUpdate$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateUserSuccess),
-      map(() => loadUser())
+      ofType(updateShopSuccess),
+      map(() => loadShop())
+    )
+  );
+
+  removeAuthorizedUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeAuthorizedUser),
+      switchMap(({ userId }) => {
+        return this.authService.logoutUser(userId).pipe(
+          this.loadingBarSrv.withLoading(),
+          map(() => removeAuthorizedUserSuccess({ userId })),
+          catchError((error) => of(removeAuthorizedUserFailure({ error: error.message }))),
+          tap(() => {
+            this.router.navigate([`/${CurRoutes.Auth}`]);
+          })
+        );
+      })
     )
   );
 }

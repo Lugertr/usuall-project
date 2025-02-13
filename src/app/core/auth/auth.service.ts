@@ -2,22 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { RestHttpClient } from '@core/rest-http-client/rest-http-client.service';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
-import { Observable, of } from 'rxjs';
-import { User } from 'src/app/models/auth';
-import { loadUserSuccess, setToken } from 'src/app/store/auth/auth.actions';
-
-export interface LoginDeliveryReq {
-  clientID: string;
-  clientSecret: string;
-  userID: string;
-}
-
-export interface LoginWSAReq {
-  object_id: string;
-  wsa_token: string;
-  userID: string;
-}
+import { catchError, Observable, of, tap } from 'rxjs';
+import { CurRoutes } from 'src/app/app.routes';
+import { ClientToken, LoginDeliveryReq, LoginWSAReq, Shop } from 'src/app/models/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -27,36 +14,28 @@ export class AuthService {
   private store = inject(Store);
   private router = inject(Router);
 
-  getUser(): Observable<User> {
-    return this.http.get<User>('/api/auth/users/me');
-    return of({
-      id: 1,
-      email: 'user@example.com',
-      is_active: true,
-      is_superuser: false,
-      is_verified: false,
-      role: 'admin',
-      shop_url: 'https://shop.example.com',
-      insales_id: 12345,
-      is_synchronous: true,
-      is_custom_field_added: true,
-      export_type: 0
-    });
-
+  getShop(): Observable<Shop> {
+    return this.http.get<Shop>('/api/auth/users/me').pipe(
+      catchError((err) => {
+        console.log(err);
+        return of(null);
+      })
+    );
   }
 
-  updUser(user: User): Observable<User> {
-    return this.http.patch<User>('/api/auth/users/me', user)
-    return of(user);
+  updShop(shop: Shop): Observable<Shop> {
+    return this.http.patch<Shop>('/api/auth/users/me', shop);
   }
 
-  sync(test?:any) {
-    return this.http.post('/api/v1/back_office/synchronous_menu', {});
+  signClient(body: LoginDeliveryReq | LoginWSAReq)  {
+    return this.http.post<ClientToken>('/api/v1/back_office/synchronous_menu', body);
   }
 
-  logout(): void {
-    this.store.dispatch(setToken({ token: null }));
-    this.store.dispatch(loadUserSuccess({ user: null }));
-    this.router.navigate(['/auth']);
+  sync(): Observable<void> {
+    return this.http.post<void>('/api/v1/back_office/synchronous_menu', {});
+  }
+
+  logoutUser(user_id: string): Observable<void> {
+    return this.http.post<void>('/api/v1/back_office/synchronous_menu', {});
   }
 }

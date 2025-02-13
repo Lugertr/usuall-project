@@ -1,4 +1,19 @@
+export interface AuthState {
+  shopToken: string | null;
+  shop: Shop | null;
+  loading: boolean;
+  error: string | null;
+  authorizedUsers: User[];
+  currentUser: User;
+}
+
 export interface User {
+  userId: string;
+  usersecret: string;
+  accessToken: string;
+}
+
+export interface Shop {
   id: number;
   email: string;
   is_active: boolean;
@@ -12,9 +27,18 @@ export interface User {
   export_type: number;
 }
 
-export interface AuthState {
-  token: string | null;
-  user: User | null;
-  loading: boolean;
-  error: string | null;
+export interface LoginDeliveryReq {
+  clientID: string;
+  clientSecret: string;
+  userID: string;
+}
+
+export interface LoginWSAReq {
+  object_id: string;
+  wsa_token: string;
+  userID: string;
+}
+
+export interface ClientToken {
+  access_token: string;
 }
