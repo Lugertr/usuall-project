@@ -20,7 +20,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         let modifiedRequest = request;
         if (shopToken) {
           modifiedRequest = request.clone({
-            setHeaders: { Authorization: `Bearer ${shopToken}` }
+            setHeaders: { Cookie: `Bearer ${shopToken}` }
           });
         }
         return next.handle(modifiedRequest)
