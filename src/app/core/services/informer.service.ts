@@ -21,7 +21,7 @@ export class InformerService {
         break;
     }
 
-    this.toastr.error(errMsg, title, { timeOut: 0, extendedTimeOut: 0, closeButton: false, tapToDismiss: false, ...override });
+    this.toastr.error(errMsg, title, { ...override });
     return result || null;
   }
 

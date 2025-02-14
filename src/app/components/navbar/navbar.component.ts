@@ -20,6 +20,7 @@ import { CurRoutes } from 'src/app/app.routes';
 import { filter, takeUntil } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
 import { Themes, ThemeService } from '@core/services/theme.service';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-navbar',
@@ -31,6 +32,7 @@ import { Themes, ThemeService } from '@core/services/theme.service';
     MatToolbarModule,
     MatMenuModule,
     ProfileComponent,
+    MatTooltipModule
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],

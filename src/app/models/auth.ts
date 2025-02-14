@@ -13,6 +13,11 @@ export interface User {
   accessToken: string;
 }
 
+export const enum ExportType {
+  Delivery = 1,
+  WSA
+}
+
 export interface Shop {
   id: number;
   email: string;
@@ -24,19 +29,21 @@ export interface Shop {
   insales_id: number;
   is_synchronous: boolean;
   is_custom_field_added: boolean;
-  export_type: number;
+  export_type: ExportType;
+  clientID?: string;
+  clientSecret?: string;
+  object_id?: string;
+  wsa_token?: string;
 }
 
 export interface LoginDeliveryReq {
   clientID: string;
   clientSecret: string;
-  userID: string;
 }
 
 export interface LoginWSAReq {
   object_id: string;
   wsa_token: string;
-  userID: string;
 }
 
 export interface ClientToken {

@@ -19,8 +19,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
       switchMap(shopToken => {
         let modifiedRequest = request;
         if (shopToken) {
+          console.log('test')
+          console.log(shopToken)
           modifiedRequest = request.clone({
-            setHeaders: { Cookie: `Bearer ${shopToken}` }
+            setHeaders:  { Authorization: `Bearer ${shopToken}` }
           });
         }
         return next.handle(modifiedRequest)

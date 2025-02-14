@@ -8,7 +8,10 @@
     </button>
   </div>
   <span>APP</span>
-  <div [class.visibility-none]="showAction">
+  <div>
+    <button mat-icon-button matTooltip="Синхронизация">
+      <mat-icon>sync</mat-icon>
+    </button>
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>account_circle</mat-icon>
     </button>
