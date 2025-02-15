@@ -4,7 +4,7 @@ export function isFilledArray(v: unknown): boolean {
 
 export function isArraysEqual<T extends number | string>(
   ar1: T[] | null,
-  ar2: T[] | null,
+  ar2: T[] | null
 ): boolean {
   if (ar1 === ar2) return true;
   if (!Array.isArray(ar1) || !Array.isArray(ar2)) return false;
@@ -29,7 +29,7 @@ export function chunkArray<T>(arr: T[], chunkSize: number): T[][] {
 export function arrayIncludesWith<T>(
   arr: T[],
   value: T,
-  comparator: (a: T, b: T) => boolean,
+  comparator: (a: T, b: T) => boolean
 ): boolean {
   if (arr.length === 0) return false;
 

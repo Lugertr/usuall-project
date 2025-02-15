@@ -27,11 +27,11 @@ export class ModalLoaderComponent implements OnInit {
       .subscribe({
         next: () => {
           this.informer.success('Синхронизация успешна');
-          //this.closeModal();
+          this.closeModal();
         },
         error: (err) => {
           this.informer.error(err, 'Ошибка синхронизации');
-          //this.closeModal();
+          this.closeModal();
         },
       });
   }

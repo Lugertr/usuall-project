@@ -26,7 +26,7 @@ import { provideEffects } from '@ngrx/effects';
 import { AuthInit } from '@core/auth/auth-init.initializer';
 
 export const getBaseHref: (plSrv: PlatformLocation) => string = (
-  plSrv: PlatformLocation,
+  plSrv: PlatformLocation
 ) => plSrv.getBaseHrefFromDOM();
 
 export const appConfig: ApplicationConfig = {

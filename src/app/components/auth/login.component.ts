@@ -98,7 +98,8 @@ export class LoginComponent implements OnInit {
           this.router.navigate([CurRoutes.Main]);
         } else {
           this.hasShopToken = !!shopToken;
-
+          console.log('test');
+          console.log(this.isEdit);
           if (this.isEdit) {
             let formData: { type: ExportType; name: string; secret: string };
             switch (shop.export_type) {
@@ -119,6 +120,8 @@ export class LoginComponent implements OnInit {
             }
 
             this.loginForm.setValue(formData);
+            this.loginForm.updateValueAndValidity();
+            console.log(formData);
           }
           this.cdr.markForCheck();
         }

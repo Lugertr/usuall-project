@@ -21,7 +21,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
 
   intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     return this.store.select(selectShopToken).pipe(
       take(1),
@@ -40,9 +40,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
               this.router.navigate([CurRoutes.Auth]);
             }
             return throwError(() => err);
-          }),
+          })
         );
-      }),
+      })
     );
   }
 }

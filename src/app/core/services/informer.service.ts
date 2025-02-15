@@ -11,7 +11,7 @@ export class InformerService {
     err: ServerItemError | HttpErrorResponse | string,
     title?: string,
     result?: T,
-    override?: Partial<IndividualConfig>,
+    override?: Partial<IndividualConfig>
   ): T | null {
     let errMsg = '';
 
@@ -35,7 +35,7 @@ export class InformerService {
   warn(
     msg: string,
     title?: string,
-    override?: Partial<IndividualConfig>,
+    override?: Partial<IndividualConfig>
   ): void {
     this.toastr.warning(msg, title, { ...override });
   }
@@ -43,7 +43,7 @@ export class InformerService {
   info(
     msg: string,
     title?: string,
-    override?: Partial<IndividualConfig>,
+    override?: Partial<IndividualConfig>
   ): void {
     this.toastr.info(msg, title, { ...override });
   }
@@ -51,7 +51,7 @@ export class InformerService {
   success(
     msg: string,
     title?: string,
-    override?: Partial<IndividualConfig>,
+    override?: Partial<IndividualConfig>
   ): void {
     this.toastr.success(msg, title, { ...override });
   }

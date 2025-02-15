@@ -34,7 +34,7 @@ export class ProfileComponent {
   exportType = ExportType;
 
   shop: WritableSignal<Observable<Shop>> = signal(
-    this.store.select(selectShop),
+    this.store.select(selectShop)
   );
 
   editProfile(): void {

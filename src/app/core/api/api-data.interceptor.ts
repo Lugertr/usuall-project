@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
 export class ApiDataInterceptor implements HttpInterceptor {
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
@@ -25,7 +25,7 @@ export class ApiDataInterceptor implements HttpInterceptor {
           return event.clone({ body: event.body.data });
         }
         return event;
-      }),
+      })
     );
   }
 }

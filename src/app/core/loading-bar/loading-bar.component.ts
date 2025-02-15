@@ -9,7 +9,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-loading-bar',
   template: `
     @if (show$ | async) {
-      <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
     }
   `,
   styles: [

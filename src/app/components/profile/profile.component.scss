@@ -20,6 +20,13 @@
   width: fit-content;
 }
 
+.card-content-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: fit-content;
+}
+
 .content-container {
   display: flex;
   flex-direction: column;

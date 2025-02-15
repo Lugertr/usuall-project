@@ -23,7 +23,7 @@ export const routes: Routes = [
     path: CurRoutes.Profile,
     loadComponent: () =>
       import('./components/profile/profile.component').then(
-        (c) => c.ProfileComponent,
+        (c) => c.ProfileComponent
       ),
     canActivate: [authGuard],
   },

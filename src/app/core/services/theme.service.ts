@@ -24,8 +24,8 @@ export class ThemeService {
       isDarkMode === undefined
         ? this.getSavedOrDefaultTheme()
         : isDarkMode
-          ? Themes.Dark
-          : Themes.Light;
+        ? Themes.Dark
+        : Themes.Light;
 
     document.documentElement.className = theme;
     localStorage.setItem(THEME_STORAGE_KEY, theme);

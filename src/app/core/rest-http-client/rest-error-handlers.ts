@@ -92,7 +92,7 @@ export class RestError<D = unknown> implements ServerItemError<D> {
 const HTTP_NETWORK_ERROR_STATUS_CODE = 0;
 
 export function handleRestHttpError(
-  resp: HttpErrorResponse,
+  resp: HttpErrorResponse
 ): Observable<never> {
   switch (resp.status) {
     case HttpStatusCode.NotFound:
@@ -102,7 +102,7 @@ export function handleRestHttpError(
             error: resp.statusText,
             detail: resp.message,
             status: resp.status,
-          }),
+          })
       );
     case HTTP_NETWORK_ERROR_STATUS_CODE:
       return throwError(
@@ -112,7 +112,7 @@ export function handleRestHttpError(
             message: 'Ошибка сети, проверьте подключение.',
             detail: resp.message,
             status: resp.status,
-          }),
+          })
       );
   }
   const body = resp.error;
@@ -125,7 +125,7 @@ export function handleRestHttpError(
     }
 
     return throwError(
-      () => new RestError({ ...itemError, status: resp.status }),
+      () => new RestError({ ...itemError, status: resp.status })
     );
   } else if (body && typeof body?.error === 'string') {
     return throwError(
@@ -134,7 +134,7 @@ export function handleRestHttpError(
           error: body.error,
           detail: resp.message,
           status: resp.status,
-        }),
+        })
     );
   }
 
@@ -144,12 +144,12 @@ export function handleRestHttpError(
         error: body,
         detail: resp.message,
         status: resp.status,
-      }),
+      })
   );
 }
 
 export function handleRestHttpMultipleErrors(
-  resp: HttpErrorResponse,
+  resp: HttpErrorResponse
 ): Observable<never> {
   const restError = new RestHttpResponse({
     responseStatusCode: resp.status,
@@ -170,7 +170,7 @@ export function handleRestHttpMultipleErrors(
 
 // Temporary solution, https://github.com/angular/angular/issues/19148
 export function handleRestHttpBlobError(
-  error: HttpErrorResponse,
+  error: HttpErrorResponse
 ): Observable<never> {
   const cType = error.headers.get('Content-Type');
   if (
@@ -184,8 +184,8 @@ export function handleRestHttpBlobError(
         handleRestHttpError({
           ...error,
           error: JSON.parse(ev.target['result']),
-        }),
-      ),
+        })
+      )
     );
   } else {
     return handleRestHttpError(error);

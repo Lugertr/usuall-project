@@ -32,7 +32,7 @@ export class AuthEffects {
     private store: Store,
     private loadingBarSrv: LoadingBarService,
     private informer: InformerService,
-    private router: Router,
+    private router: Router
   ) {}
 
   loadShop$ = createEffect(() =>
@@ -57,8 +57,8 @@ export class AuthEffects {
       catchError((error) => {
         this.informer.error(error, 'Ошибка авторизации клиента');
         return of(loadShopFailure({ error: error }));
-      }),
-    ),
+      })
+    )
   );
 
   updateShop$ = createEffect(() =>
@@ -74,16 +74,16 @@ export class AuthEffects {
           catchError((error) => {
             this.informer.error(error, 'Ошибка авторизации клиента');
             return of(updateShopFailure({ error: error.message }));
-          }),
-        ),
-      ),
-    ),
+          })
+        )
+      )
+    )
   );
 
   reloadShopAfterUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateShopSuccess),
-      map(() => loadShop()),
-    ),
+      map(() => loadShop())
+    )
   );
 }
