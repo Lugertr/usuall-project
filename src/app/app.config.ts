@@ -26,9 +26,8 @@ import { provideEffects } from '@ngrx/effects';
 import { AuthInit } from '@core/auth/auth-init.initializer';
 
 export const getBaseHref: (plSrv: PlatformLocation) => string = (
-  plSrv: PlatformLocation
+  plSrv: PlatformLocation,
 ) => plSrv.getBaseHrefFromDOM();
-
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,9 +43,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(AuthInit),
     provideEffects(AuthEffects),
     CookieService,
-    importProvidersFrom(
-      ToastrModule.forRoot(),
-    ),
+    importProvidersFrom(ToastrModule.forRoot()),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpInterceptor,
@@ -54,5 +51,5 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
-    ],
+  ],
 };

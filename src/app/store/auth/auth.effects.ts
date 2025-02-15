@@ -14,17 +14,15 @@ import {
   loadShop,
   loadShopFailure,
   loadShopSuccess,
-  removeAuthorizedUser,
-  removeAuthorizedUserFailure,
-  removeAuthorizedUserSuccess,
   updateShop,
   updateShopFailure,
   updateShopSuccess,
 } from './auth.actions';
 import { selectShopToken } from './auth.selectors';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
-import { CurRoutes } from 'src/app/app.routes';
+import { InformerService } from '@core/services/informer.service';
 import { Router } from '@angular/router';
+import { CurRoutes } from 'src/app/app.routes';
 
 @Injectable()
 export class AuthEffects {
@@ -33,7 +31,8 @@ export class AuthEffects {
     private authService: AuthService,
     private store: Store,
     private loadingBarSrv: LoadingBarService,
-    private router: Router
+    private informer: InformerService,
+    private router: Router,
   ) {}
 
   loadShop$ = createEffect(() =>
@@ -41,57 +40,50 @@ export class AuthEffects {
       ofType(loadShop),
       withLatestFrom(this.store.select(selectShopToken)),
       switchMap(([_, token]) => {
-        console.log(!token);
-        if (!token) return of(loadShopFailure({ error: 'No token' }));
-        return this.authService.getShop().pipe(
-          this.loadingBarSrv.withLoading(),
-          map((shop) => {
-            if (shop) {
-              return loadShopSuccess({ shop });
-            }
-            return loadShopFailure({ error: 'shop is empty' });
-          }),
-          catchError((error) => {
-            return of(loadShopFailure({ error: error }));
-          })
-        );
-      })
-    )
+        if (!token) {
+          this.router.navigate([CurRoutes.Auth]);
+          throw new Error('Нет токена');
+        }
+        return this.authService
+          .getShop()
+          .pipe(this.loadingBarSrv.withLoading());
+      }),
+      map((shop) => {
+        if (shop) {
+          return loadShopSuccess({ shop });
+        }
+        return loadShopFailure({ error: 'shop is empty' });
+      }),
+      catchError((error) => {
+        this.informer.error(error, 'Ошибка авторизации клиента');
+        return of(loadShopFailure({ error: error }));
+      }),
+    ),
   );
 
   updateShop$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateShop),
-      switchMap(({ shop }) =>
-        this.authService.updShop(shop).pipe(
+      switchMap(({ req }) =>
+        this.authService.updShop(req).pipe(
           this.loadingBarSrv.withLoading(),
           map((updatedShop) => updateShopSuccess({ shop: updatedShop })),
-          catchError((error) => of(updateShopFailure({ error: error.message })))
-        )
-      )
-    )
+          tap(() => {
+            this.informer.success('Авторизация клиента упешна');
+          }),
+          catchError((error) => {
+            this.informer.error(error, 'Ошибка авторизации клиента');
+            return of(updateShopFailure({ error: error.message }));
+          }),
+        ),
+      ),
+    ),
   );
 
   reloadShopAfterUpdate$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateShopSuccess),
-      map(() => loadShop())
-    )
-  );
-
-  removeAuthorizedUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(removeAuthorizedUser),
-      switchMap(({ userId }) => {
-        return this.authService.logoutUser(userId).pipe(
-          this.loadingBarSrv.withLoading(),
-          map(() => removeAuthorizedUserSuccess({ userId })),
-          catchError((error) => of(removeAuthorizedUserFailure({ error: error.message }))),
-          tap(() => {
-            this.router.navigate([`/${CurRoutes.Auth}`]);
-          })
-        );
-      })
-    )
+      map(() => loadShop()),
+    ),
   );
 }

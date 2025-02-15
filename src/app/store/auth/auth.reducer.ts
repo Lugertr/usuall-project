@@ -1,26 +1,27 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-  addAuthorizedUser,
   loadShop,
   loadShopFailure,
   loadShopSuccess,
-  removeAuthorizedUserFailure,
-  removeAuthorizedUserSuccess,
-  setCurrentUser,
   setShopToken,
   updateShop,
   updateShopFailure,
   updateShopSuccess,
 } from './auth.actions';
-import { AuthState } from 'src/app/models/auth';
+import { Shop } from 'src/app/models/auth';
+
+export interface AuthState {
+  shopToken: string | null;
+  shop: Shop | null;
+  loading: boolean;
+  error: string | null;
+}
 
 const initialState: AuthState = {
   shopToken: null,
   shop: null,
   loading: false,
   error: null,
-  authorizedUsers: [],
-  currentUser: null,
 };
 
 export const authReducer = createReducer(
@@ -54,28 +55,4 @@ export const authReducer = createReducer(
     error,
     loading: false,
   })),
-
-  on(addAuthorizedUser, (state, { user }) => ({
-    ...state,
-    authorizedUsers: [...state.authorizedUsers, user],
-  })),
-
-  on(setCurrentUser, (state, { user }) => ({
-    ...state,
-    currentUser: user,
-  })),
-
-  on(removeAuthorizedUserSuccess, (state, { userId }) => ({
-    ...state,
-    authorizedUsers: state.authorizedUsers.filter(
-      (user) => user.userId !== userId
-    ),
-    currentUser:
-      state.currentUser?.userId === userId ? null : state.currentUser,
-  })),
-
-  on(removeAuthorizedUserFailure, (state, { error }) => ({
-    ...state,
-    error,
-  }))
 );

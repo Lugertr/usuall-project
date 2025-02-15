@@ -8,6 +8,6 @@ export const environment = {
     token2: import.meta.env.NG_APP_TOKEN2 || '',
     email_confirmed: import.meta.env.NG_APP_EMAIL_CONFIRMED === 'true',
     token3: import.meta.env.NG_APP_TOKEN3 || '',
-    insales_id: Number(import.meta.env.NG_APP_INSALES_ID) || 0
-  }
+    insales_id: Number(import.meta.env.NG_APP_INSALES_ID) || 0,
+  },
 };

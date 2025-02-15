@@ -1,27 +1,23 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CurRoutes } from 'src/app/app.routes';
-import { AuthState } from 'src/app/models/auth';
+import { AuthState } from './auth.reducer';
 
 export const selectAuthState = createFeatureSelector<AuthState>(CurRoutes.Auth);
 
-export const selectShopToken = createSelector(selectAuthState, (state) => state.shopToken);
-export const selectShop = createSelector(selectAuthState, (state) => state.shop);
-
-export const selectAuthLoading = createSelector(selectAuthState, (state) => state.loading);
-export const selectAuthError = createSelector(selectAuthState, (state) => state.error);
-
-export const selectAuthorizedUsers = createSelector(
+export const selectShopToken = createSelector(
   selectAuthState,
-  (state) => state.authorizedUsers
+  (state) => state.shopToken,
+);
+export const selectShop = createSelector(
+  selectAuthState,
+  (state) => state.shop,
 );
 
-export const selectAuthorizedUserByID = createSelector(
+export const selectAuthLoading = createSelector(
   selectAuthState,
-  (state, props: { userID: string }) =>
-    state.authorizedUsers.find((user) => user.userID === props.userID)
+  (state) => state.loading,
 );
-
-export const selectCurrentUser = createSelector(
+export const selectAuthError = createSelector(
   selectAuthState,
-  (state) => state.currentUser
+  (state) => state.error,
 );

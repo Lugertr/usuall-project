@@ -1,41 +1,44 @@
 import { inject, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { RestHttpClient } from '@core/rest-http-client/rest-http-client.service';
-import { Store } from '@ngrx/store';
-import { catchError, Observable, of, tap } from 'rxjs';
-import { CurRoutes } from 'src/app/app.routes';
-import { ClientToken, LoginDeliveryReq, LoginWSAReq, Shop } from 'src/app/models/auth';
+import { catchError, mergeMap, Observable, of, take, tap, timer } from 'rxjs';
+import { ExportType, LoginDelivery, LoginWSA, Shop } from 'src/app/models/auth';
+
+export interface BaseLogin {
+  export_type: ExportType;
+}
+
+export interface LoginDeliveryReq extends BaseLogin, LoginDelivery {
+  export_type: ExportType.Delivery;
+}
+
+export interface LoginWSAReq extends BaseLogin, LoginWSA {
+  export_type: ExportType.WSA;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(RestHttpClient);
-  private store = inject(Store);
-  private router = inject(Router);
 
   getShop(): Observable<Shop> {
-    return this.http.get<Shop>('/api/auth/users/me').pipe(
-      catchError((err) => {
-        console.log(err);
-        return of(null);
-      })
-    );
+    return this.http.get<Shop>('/api/auth/users/me');
   }
 
-  updShop(shop: Shop): Observable<Shop> {
-    return this.http.patch<Shop>('/api/auth/users/me', shop);
-  }
-
-  signClient(body: LoginDeliveryReq | LoginWSAReq)  {
-    return this.http.post<ClientToken>('/api/v1/back_office/synchronous_menu', body);
+  updShop(body: LoginDeliveryReq | LoginWSAReq): Observable<Shop> {
+    return this.http.patch<Shop>('/api/auth/users/me', body);
   }
 
   sync(): Observable<void> {
-    return this.http.post<void>('/api/v1/back_office/synchronous_menu', {});
+    return this.http.get('/api/back_office/synchorinization_menu').pipe(
+      mergeMap((t) => {
+        return timer(0, 8000).pipe(take(5));
+      }),
+      mergeMap(() => this.getSyncStatus()),
+    );
   }
 
-  logoutUser(user_id: string): Observable<void> {
-    return this.http.post<void>('/api/v1/back_office/synchronous_menu', {});
+  private getSyncStatus(): Observable<void> {
+    return this.http.get('/api/back_office/progress_bar');
   }
 }

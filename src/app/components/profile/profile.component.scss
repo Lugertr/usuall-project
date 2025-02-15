@@ -1,17 +1,43 @@
-.mdc-card {
-  padding: 20px;
-  gap: 20px;
-  width: 350px;
-}
-
-.form, .form-fields {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 5px;
+:host {
+  height: 100%;
   width: 100%;
 }
 
-.form {
+.card {
+  padding: 20px;
   gap: 20px;
+  max-width: 90%;
+  width: fit-content;
+  margin: auto;
+}
+
+.card-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 24px;
+  height: fit-content;
+  width: fit-content;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-content-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-content-item strong {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.card-content-item span {
+  font-size: 18px;
+  line-height: 22px;
 }

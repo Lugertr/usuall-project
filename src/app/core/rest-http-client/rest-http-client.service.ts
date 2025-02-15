@@ -28,7 +28,7 @@ export class RestHttpClient {
       context?: HttpContext;
       params?: HttpParams | Record<string, string | string[]>;
       catchMultipleErrors?: boolean;
-    }
+    },
   ): Observable<T> {
     return this.http
       .get<ServerBody<T>>(url, { ...options, observe: 'response' })
@@ -43,7 +43,7 @@ export class RestHttpClient {
       context?: HttpContext;
       params?: HttpParams | Record<string, string | string[]>;
       catchMultipleErrors?: boolean;
-    }
+    },
   ): Observable<T> {
     return this.http
       .post<ServerBody<T>>(url, body, { ...options, observe: 'response' })
@@ -58,7 +58,7 @@ export class RestHttpClient {
       context?: HttpContext;
       params?: HttpParams | Record<string, string | string[]>;
       catchMultipleErrors?: boolean;
-    }
+    },
   ): Observable<T> {
     return this.http
       .patch<ServerBody<T>>(url, body, { ...options, observe: 'response' })
@@ -66,7 +66,7 @@ export class RestHttpClient {
   }
 
   private processResponse<T>(
-    multiple?: boolean
+    multiple?: boolean,
   ): (resp: Observable<HttpResponse<ServerBody<T>>>) => Observable<T> {
     return (resp) =>
       resp.pipe(
@@ -85,8 +85,8 @@ export class RestHttpClient {
           return (res.body as T) || null;
         }),
         catchError(
-          multiple ? handleRestHttpMultipleErrors : handleRestHttpError
-        )
+          multiple ? handleRestHttpMultipleErrors : handleRestHttpError,
+        ),
       );
   }
 }

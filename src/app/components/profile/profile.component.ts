@@ -1,23 +1,16 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { Shop } from 'src/app/models/auth';
+import { ExportType, LoginDelivery, LoginWSA, Shop } from 'src/app/models/auth';
 import { Store } from '@ngrx/store';
 import { selectShop } from 'src/app/store/auth/auth.selectors';
-import { takeUntil } from 'rxjs';
-import { AuthService } from '@core/auth/auth.service';
+import { Observable } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
-import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
-import { InformerService } from '@core/services/informer.service';
+import { MatDividerModule } from '@angular/material/divider';
+import { Router } from '@angular/router';
+import { CurRoutes } from 'src/app/app.routes';
+import { MatIconModule } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -25,74 +18,41 @@ import { InformerService } from '@core/services/informer.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatInputModule,
+    AsyncPipe,
     MatButtonModule,
+    MatIconModule,
     MatCardModule,
+    MatDividerModule,
   ],
   providers: [DestroyService],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
   private store = inject(Store);
-  private authSrv = inject(AuthService);
-  private destroy = inject(DestroyService);
-  private informer = inject(InformerService);
-  private loadingBarSrv = inject(LoadingBarService);
-
-  userForm = new FormGroup({
-    email: new FormControl({ value: '', disabled: true }),
-    role: new FormControl({ value: '', disabled: true }),
-    shop_url: new FormControl({ value: '', disabled: true }),
-  });
+  private router = inject(Router);
 
   isEditing: WritableSignal<boolean> = signal(false);
+  exportType = ExportType;
 
-  private shop: Shop = null;
+  shop: WritableSignal<Observable<Shop>> = signal(
+    this.store.select(selectShop),
+  );
 
-  ngOnInit(): void {
-    this.store
-      .select(selectShop)
-      .pipe(takeUntil(this.destroy))
-      .subscribe((shop) => {
-        this.shop = shop || null;
-
-        if (shop) {
-          this.userForm.patchValue({
-            email: shop.email,
-            role: shop.role,
-            shop_url: shop.shop_url,
-          });
-        }
-      });
+  editProfile(): void {
+    this.router.navigate([CurRoutes.Auth], { state: { isEdit: true } });
   }
 
-  toggleEdit(): void {
-    const editing = !this.isEditing();
-    this.isEditing.set(editing);
-
-    if (editing) {
-      this.userForm.enable();
-    } else {
-      this.userForm.disable();
-      this.saveChanges();
-    }
+  booleanToText(value: boolean): string {
+    return value ? 'Да' : 'Нет';
   }
 
-  saveChanges(): void {
-    if (!this.userForm.invalid && this.shop) {
-      const updatedShop = { ...this.shop, ...this.userForm.value };
-      this.authSrv
-        .updShop(updatedShop)
-        .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy))
-        .subscribe({
-          next: () => {
-            this.informer.success('Данные успешно изменены');
-          },
-          error: (err) => {
-            this.informer.error(err);
-          },
-        });
+  clientInfo(shop: Shop): { login: string; password: string } {
+    switch (shop.export_type) {
+      case this.exportType.Delivery:
+        const userVal = shop.params as LoginDelivery;
+        return { login: userVal.client_id, password: userVal.client_secret };
+      case this.exportType.WSA:
+        const user = shop.params as LoginWSA;
+        return { login: user.object_id, password: user.wsa_token };
     }
   }
 }

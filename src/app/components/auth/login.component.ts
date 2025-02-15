@@ -13,21 +13,17 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
 import { AsyncPipe } from '@angular/common';
-import { takeUntil } from 'rxjs';
+import { combineLatest, take, takeUntil } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
 import { LoginDescComponent } from './login-desc/login-desc.component';
 import { MatCardModule } from '@angular/material/card';
-import { AuthService } from '@core/auth/auth.service';
-import { InformerService } from '@core/services/informer.service';
-import { selectShopToken } from 'src/app/store/auth/auth.selectors';
+import { selectShop, selectShopToken } from 'src/app/store/auth/auth.selectors';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.prod';
+import { ExportType, LoginDelivery, LoginWSA } from 'src/app/models/auth';
+import { updateShop, updateShopSuccess } from 'src/app/store/auth/auth.actions';
+import { CurRoutes } from 'src/app/app.routes';
 
-enum LoginType {
-  Delivery,
-  WSA,
-}
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -49,63 +45,83 @@ enum LoginType {
 })
 export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
   private loadingBarSrv = inject(LoadingBarService);
   private destroy$ = inject(DestroyService);
-  private informer = inject(InformerService);
   private store = inject(Store);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
   hidePassword = true;
-  private userId: number = environment.storeInfo.user_id;
+  hasShopToken: boolean;
+  isEdit = false;
+  loading$ = this.loadingBarSrv.show$;
 
   loginForm = this.fb.group({
-    type: [LoginType.Delivery, [Validators.required]],
+    type: [ExportType.Delivery, [Validators.required]],
     name: ['', [Validators.required]],
     secret: ['', Validators.required],
   });
 
-  loginType = LoginType;
-  loading$ = this.loadingBarSrv.show$;
-
-  hasShopToken: boolean;
+  exportType = ExportType;
 
   get loginNameLabel(): string {
     switch (this.loginForm.value.type) {
-      case LoginType.Delivery:
+      case ExportType.Delivery:
         return 'ClientId';
-      case LoginType.WSA:
+      case ExportType.WSA:
         return 'ObjectID';
     }
   }
 
   get loginSecretLabel(): string {
     switch (this.loginForm.value.type) {
-      case LoginType.Delivery:
+      case ExportType.Delivery:
         return 'ClientSecret';
-      case LoginType.WSA:
+      case ExportType.WSA:
         return 'WSAToken';
     }
   }
 
-  ngOnInit(): void {
-    this.store
-      .select(selectShopToken)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((shopToken) => {
-        this.hasShopToken = !!shopToken;
-        this.cdr.markForCheck();
-      });
+  constructor() {
+    const navigation = this.router.getCurrentNavigation();
+    this.isEdit = navigation?.extras.state?.isEdit || false;
   }
 
-  onSync(): void {
-    this.authService
-      .sync()
-      .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
-      .subscribe({
-        next: () => this.informer.success('Синхронизация успешна'),
-        error: (err) => this.informer.error(err, 'Ошибка синхронизации'),
+  ngOnInit(): void {
+    combineLatest([
+      this.store.select(selectShopToken),
+      this.store.select(selectShop),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([shopToken, shop]) => {
+        if (shop?.params && !this.isEdit) {
+          this.router.navigate([CurRoutes.Main]);
+        } else {
+          this.hasShopToken = !!shopToken;
+
+          if (this.isEdit) {
+            let formData: { type: ExportType; name: string; secret: string };
+            switch (shop.export_type) {
+              case this.exportType.Delivery:
+                const userVal = shop.params as LoginDelivery;
+                formData = {
+                  type: shop.export_type,
+                  name: userVal.client_id,
+                  secret: userVal.client_secret,
+                };
+              case this.exportType.WSA:
+                const user = shop.params as LoginWSA;
+                formData = {
+                  type: shop.export_type,
+                  name: user.object_id,
+                  secret: user.wsa_token,
+                };
+            }
+
+            this.loginForm.setValue(formData);
+          }
+          this.cdr.markForCheck();
+        }
       });
   }
 
@@ -115,20 +131,18 @@ export class LoginComponent implements OnInit {
     const { type, name, secret } = this.loginForm.value;
 
     const req =
-      type === LoginType.Delivery
-        ? { clientID: name, clientSecret: secret, userID: `${this.userId}` }
-        : { object_id: name, wsa_token: secret, userID: `${this.userId}` };
+      type === ExportType.Delivery
+        ? { client_id: name, client_secret: secret, export_type: type }
+        : { object_id: name, wsa_token: secret, export_type: type };
 
-    this.authService.signClient(req)
-      .pipe(this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.informer.success('Авторизация клиента упешна');
-          this.router.navigate(['/main']);
-        },
-        error: (err) => {
-          this.informer.error(err, 'Ошибка авторизации клиента');
-        },
+    this.store.dispatch(updateShop({ req }));
+    this.router.navigate([CurRoutes.Main]);
+
+    this.store
+      .select(updateShopSuccess)
+      .pipe(take(1), this.loadingBarSrv.withLoading(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.router.navigate([CurRoutes.Main]);
       });
   }
 }

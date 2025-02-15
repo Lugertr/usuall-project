@@ -1,25 +1,85 @@
-<mat-card>
-  <mat-card-title>Пользователь</mat-card-title>
+@let user = shop() | async;
+@if (user) {
+  <mat-card class="card">
+    <mat-card-title>👤 Пользователь #{{ user.id }}</mat-card-title>
+    <mat-card-subtitle
+      ><strong>Email:&nbsp;</strong>{{ user.email }}</mat-card-subtitle
+    >
 
-  <form [formGroup]="userForm" class="form">
-    <div class="form-fields">
-      <mat-form-field class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" />
-      </mat-form-field>
+    <mat-divider></mat-divider>
 
-      <mat-form-field class="full-width">
-        <mat-label>Роль</mat-label>
-        <input matInput formControlName="role" />
-      </mat-form-field>
+    <mat-card-content class="card-content">
+      <div class="content-container">
+        <button mat-button (click)="editProfile()">
+          <mat-icon>edit</mat-icon>
+          <span>Изменить данные</span>
+        </button>
+        <div class="card-content-item">
+          <strong>Тип магазина:</strong>
+          <span>{{
+            user.export_type === exportType.Delivery ? "Доставка" : "WSA"
+          }}</span>
+        </div>
 
-      <mat-form-field class="full-width">
-        <mat-label>Магазин</mat-label>
-        <input matInput formControlName="shop_url" />
-      </mat-form-field>
-    </div>
-    <button mat-raised-button color="primary" (click)="toggleEdit()">
-      {{ isEditing() ? "Сохранить" : "Редактировать" }}
-    </button>
-  </form>
-</mat-card>
+        @if (user.params) {
+          @let client = clientInfo(user);
+          @if (user.export_type === exportType.Delivery) {
+            <div class="card-content-item">
+              <strong>Client ID:</strong>
+              <span>{{ client.login }}</span>
+            </div>
+            <div class="card-content-item">
+              <strong>Client Secret:</strong>
+              <span>{{ client.password }}</span>
+            </div>
+          } @else if (user.export_type === exportType.WSA) {
+            <div class="card-content-item">
+              <strong>Object ID:</strong>
+              <span>{{ client.login }}</span>
+            </div>
+            <div class="card-content-item">
+              <strong>WSA Token:</strong>
+              <span>{{ client.password }}</span>
+            </div>
+          }
+        }
+      </div>
+      <div class="content-container">
+        <div class="card-content-item">
+          <strong>Shop URL:</strong>
+          <a [href]="user.shop_url" target="_blank">{{ user.shop_url }}</a>
+        </div>
+        <div class="card-content-item">
+          <strong>Insales ID:</strong>
+          <span>{{ user.insales_id }}</span>
+        </div>
+        <div class="card-content-item">
+          <strong>Синхронизация:</strong>
+          <span>{{ booleanToText(user.is_synchronous) }}</span>
+        </div>
+        <div class="card-content-item">
+          <strong>Активен:</strong>
+          <span>{{ booleanToText(user.is_active) }}</span>
+        </div>
+      </div>
+      <div class="card-content-container">
+        <div class="card-content-item">
+          <strong>Роль:</strong>
+          <span>{{ user.role }}</span>
+        </div>
+        <div class="card-content-item">
+          <strong>Активен:</strong>
+          <span>{{ booleanToText(user.is_active) }}</span>
+        </div>
+        <div class="card-content-item">
+          <strong>Суперпользователь:</strong>
+          <span>{{ booleanToText(user.is_superuser) }}</span>
+        </div>
+        <div class="card-content-item">
+          <strong>Верифицирован:</strong>
+          <span>{{ booleanToText(user.is_verified) }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

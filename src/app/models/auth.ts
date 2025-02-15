@@ -1,21 +1,6 @@
-export interface AuthState {
-  shopToken: string | null;
-  shop: Shop | null;
-  loading: boolean;
-  error: string | null;
-  authorizedUsers: User[];
-  currentUser: User;
-}
-
-export interface User {
-  userId: string;
-  usersecret: string;
-  accessToken: string;
-}
-
-export const enum ExportType {
+export enum ExportType {
   Delivery = 1,
-  WSA
+  WSA,
 }
 
 export interface Shop {
@@ -30,22 +15,15 @@ export interface Shop {
   is_synchronous: boolean;
   is_custom_field_added: boolean;
   export_type: ExportType;
-  clientID?: string;
-  clientSecret?: string;
-  object_id?: string;
-  wsa_token?: string;
+  params: LoginDelivery | LoginWSA | null;
 }
 
-export interface LoginDeliveryReq {
-  clientID: string;
-  clientSecret: string;
+export interface LoginDelivery {
+  client_id: string;
+  client_secret: string;
 }
 
-export interface LoginWSAReq {
+export interface LoginWSA {
   object_id: string;
   wsa_token: string;
-}
-
-export interface ClientToken {
-  access_token: string;
 }

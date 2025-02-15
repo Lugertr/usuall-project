@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -11,7 +11,8 @@ html {
   color-scheme: light dark;
 }
 
-html, html.light-theme {
+html,
+html.light-theme {
   @include mat.theme(
     (
       color: (

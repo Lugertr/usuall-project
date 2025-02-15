@@ -1,13 +1,13 @@
 // Define the type of the environment variables.
 declare interface Env {
-  readonly NG_APP_TOKEN: string,
-  readonly NG_APP_USER_EMAIL: string,
-  readonly NG_APP_USER_NAME: string,
-  readonly NG_APP_USER_ID: string,
-  readonly NG_APP_TOKEN2: string,
-  readonly NG_APP_EMAIL_CONFIRMED: string,
-  readonly NG_APP_TOKEN3: string,
-  readonly NG_APP_INSALES_ID: string
+  readonly NG_APP_TOKEN: string;
+  readonly NG_APP_USER_EMAIL: string;
+  readonly NG_APP_USER_NAME: string;
+  readonly NG_APP_USER_ID: string;
+  readonly NG_APP_TOKEN2: string;
+  readonly NG_APP_EMAIL_CONFIRMED: string;
+  readonly NG_APP_TOKEN3: string;
+  readonly NG_APP_INSALES_ID: string;
 }
 
 // Choose how to access the environment variables.

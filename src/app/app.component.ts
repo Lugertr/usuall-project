@@ -18,6 +18,7 @@ import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs';
 import { selectShopToken } from './store/auth/auth.selectors';
 import { DestroyService } from '@core/services/destroy.service';
+import { CurRoutes } from './app.routes';
 
 @Component({
   selector: 'app-root',
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
   isShowingMenu = false;
   showNav = true;
 
-  navLinks = [{ path: '/', label: 'Профиль' }];
+  navLinks = [{ path: CurRoutes.Main, label: 'Главная' }];
 
   ngOnInit(): void {
     this.store

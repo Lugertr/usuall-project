@@ -24,7 +24,10 @@ export class RestHttpResponse<D = unknown> implements Data {
   }
 
   get hasError(): boolean {
-    return this.responseStatusCode !== HttpStatusCode.Ok && this.responseStatusCode !== HttpStatusCode.NoContent;
+    return (
+      this.responseStatusCode !== HttpStatusCode.Ok &&
+      this.responseStatusCode !== HttpStatusCode.NoContent
+    );
   }
 
   toString(): string {
@@ -88,7 +91,9 @@ export class RestError<D = unknown> implements ServerItemError<D> {
 
 const HTTP_NETWORK_ERROR_STATUS_CODE = 0;
 
-export function handleRestHttpError(resp: HttpErrorResponse): Observable<never> {
+export function handleRestHttpError(
+  resp: HttpErrorResponse,
+): Observable<never> {
   switch (resp.status) {
     case HttpStatusCode.NotFound:
       return throwError(
@@ -119,7 +124,9 @@ export function handleRestHttpError(resp: HttpErrorResponse): Observable<never> 
       itemError.data = body.data;
     }
 
-    return throwError(() => new RestError({ ...itemError, status: resp.status }));
+    return throwError(
+      () => new RestError({ ...itemError, status: resp.status }),
+    );
   } else if (body && typeof body?.error === 'string') {
     return throwError(
       () =>
@@ -141,7 +148,9 @@ export function handleRestHttpError(resp: HttpErrorResponse): Observable<never> 
   );
 }
 
-export function handleRestHttpMultipleErrors(resp: HttpErrorResponse): Observable<never> {
+export function handleRestHttpMultipleErrors(
+  resp: HttpErrorResponse,
+): Observable<never> {
   const restError = new RestHttpResponse({
     responseStatusCode: resp.status,
   });
@@ -160,12 +169,24 @@ export function handleRestHttpMultipleErrors(resp: HttpErrorResponse): Observabl
 }
 
 // Temporary solution, https://github.com/angular/angular/issues/19148
-export function handleRestHttpBlobError(error: HttpErrorResponse): Observable<never> {
+export function handleRestHttpBlobError(
+  error: HttpErrorResponse,
+): Observable<never> {
   const cType = error.headers.get('Content-Type');
-  if (typeof cType === 'string' && cType.split(/\s*;\s*/).indexOf('application/json') !== -1) {
+  if (
+    typeof cType === 'string' &&
+    cType.split(/\s*;\s*/).indexOf('application/json') !== -1
+  ) {
     const reader = new FileReader();
     reader.readAsText(error.error);
-    return fromEvent(reader, 'loadend').pipe(switchMap(ev => handleRestHttpError({ ...error, error: JSON.parse(ev.target['result']) })));
+    return fromEvent(reader, 'loadend').pipe(
+      switchMap((ev) =>
+        handleRestHttpError({
+          ...error,
+          error: JSON.parse(ev.target['result']),
+        }),
+      ),
+    );
   } else {
     return handleRestHttpError(error);
   }
