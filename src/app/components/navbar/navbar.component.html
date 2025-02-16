@@ -7,8 +7,7 @@
       <mat-icon>contrast</mat-icon>
     </button>
   </div>
-  <span>APP</span>
-  <img src="logoSrc" alt="" />
+  <img [src]="logoSrc" [alt]="isAuthPage ? 'Keeper' : 'Delivery'" class="logo" />
   <div [class.visibility-none]="hideAction">
     <button mat-icon-button matTooltip="Синхронизация" (click)="onSync()">
       <mat-icon>sync</mat-icon>

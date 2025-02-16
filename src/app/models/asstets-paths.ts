@@ -1,8 +1,8 @@
 import { Themes } from '@core/services/theme.service';
 
 export const enum KeeperLogoPaths {
-  Light = 'assets/logo-light.svg',
-  Dark = 'assets/logo-dark.svg',
+  Light = 'logo/keeper-logo-light.png',
+  Dark = 'logo/keeper-logo-dark.png',
 }
 
 export const KeeperLogoMap: Record<Themes, string> = {
@@ -11,8 +11,8 @@ export const KeeperLogoMap: Record<Themes, string> = {
 };
 
 export const enum DeliveryLogoPaths {
-  Light = 'assets/logo-light.svg',
-  Dark = 'assets/logo-dark.svg',
+  Light = 'logo/delivery-logo-light.png',
+  Dark = 'logo/delivery-logo-dark.png',
 }
 
 export const DeliveryLogoMap: Record<Themes, string> = {

@@ -15,6 +15,7 @@ import { ModalLoaderComponent } from '../modal-loader/modal-loader.component';
 import { Store } from '@ngrx/store';
 import { selectShop } from 'src/app/store/auth/auth.selectors';
 import { DeliveryLogoMap, KeeperLogoMap } from 'src/app/models/asstets-paths';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -36,7 +37,7 @@ export class NavBarComponent implements OnInit {
 
   hideAction = false;
   logoSrc = KeeperLogoMap[Themes.Light];
-  private isAuthPage = false;
+  isAuthPage = false;
   private isDarkMode = false;
 
   ngOnInit(): void {
@@ -61,7 +62,7 @@ export class NavBarComponent implements OnInit {
       .select(selectShop)
       .pipe(takeUntil(this.destroy$))
       .subscribe(shop => {
-        this.hideAction = !!shop.params;
+        this.hideAction = !!shop?.params;
         this.cdr.markForCheck();
       });
   }
@@ -97,12 +98,13 @@ export class NavBarComponent implements OnInit {
   }
 
   changeTheme(): void {
-    this.themeService.setTheme(this.isDarkMode);
+    this.themeService.setTheme(!this.isDarkMode);
   }
 
   updateLogo(): void {
     const logo = this.isAuthPage ? KeeperLogoMap : DeliveryLogoMap;
     const theme = this.isDarkMode ? Themes.Dark : Themes.Light;
     this.logoSrc = logo[theme];
+    this.cdr.markForCheck();
   }
 }
