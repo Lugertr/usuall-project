@@ -47,10 +47,15 @@ export class NavBarComponent implements OnInit {
       this.updateLogo();
     });
 
-    const routeSub = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
-      this.isAuthPage = event.urlAfterRedirects.includes(CurRoutes.Auth);
-      this.updateLogo();
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      )
+      .subscribe(event => {
+        this.isAuthPage = event.urlAfterRedirects.includes(CurRoutes.Auth);
+        this.updateLogo();
+      });
 
     this.store
       .select(selectShop)
