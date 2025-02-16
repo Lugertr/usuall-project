@@ -2,10 +2,7 @@ export function isFilledArray(v: unknown): boolean {
   return Array.isArray(v) && v.length > 0;
 }
 
-export function isArraysEqual<T extends number | string>(
-  ar1: T[] | null,
-  ar2: T[] | null
-): boolean {
+export function isArraysEqual<T extends number | string>(ar1: T[] | null, ar2: T[] | null): boolean {
   if (ar1 === ar2) return true;
   if (!Array.isArray(ar1) || !Array.isArray(ar2)) return false;
   if (ar1.length !== ar2.length) return false;
@@ -26,11 +23,7 @@ export function chunkArray<T>(arr: T[], chunkSize: number): T[][] {
 }
 
 /** Fork of lodash arrayIncludesWith */
-export function arrayIncludesWith<T>(
-  arr: T[],
-  value: T,
-  comparator: (a: T, b: T) => boolean
-): boolean {
+export function arrayIncludesWith<T>(arr: T[], value: T, comparator: (a: T, b: T) => boolean): boolean {
   if (arr.length === 0) return false;
 
   for (const item of arr) {

@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  ChangeDetectorRef,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './components/navbar/navbar.component';
 import { LoadingBarComponent } from '@core/loading-bar/loading-bar.component';
@@ -54,7 +48,7 @@ export class AppComponent implements OnInit {
     this.store
       .select(selectShopToken)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((shopToken) => {
+      .subscribe(shopToken => {
         this.showNav = !!shopToken;
         this.cdr.markForCheck();
       });

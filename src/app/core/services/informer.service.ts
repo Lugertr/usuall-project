@@ -7,12 +7,7 @@ import { ServerItemError } from '@core/rest-http-client/rest-error-handlers';
 export class InformerService {
   constructor(private toastr: ToastrService) {}
 
-  error<T>(
-    err: ServerItemError | HttpErrorResponse | string,
-    title?: string,
-    result?: T,
-    override?: Partial<IndividualConfig>
-  ): T | null {
+  error<T>(err: ServerItemError | HttpErrorResponse | string, title?: string, result?: T, override?: Partial<IndividualConfig>): T | null {
     let errMsg = '';
 
     switch (true) {
@@ -22,9 +17,7 @@ export class InformerService {
         errMsg = err;
         break;
       default:
-        errMsg =
-          (err.error instanceof HttpErrorResponse ? err.error : err).message ||
-          '';
+        errMsg = (err.error instanceof HttpErrorResponse ? err.error : err).message || '';
         break;
     }
 
@@ -32,27 +25,15 @@ export class InformerService {
     return result || null;
   }
 
-  warn(
-    msg: string,
-    title?: string,
-    override?: Partial<IndividualConfig>
-  ): void {
+  warn(msg: string, title?: string, override?: Partial<IndividualConfig>): void {
     this.toastr.warning(msg, title, { ...override });
   }
 
-  info(
-    msg: string,
-    title?: string,
-    override?: Partial<IndividualConfig>
-  ): void {
+  info(msg: string, title?: string, override?: Partial<IndividualConfig>): void {
     this.toastr.info(msg, title, { ...override });
   }
 
-  success(
-    msg: string,
-    title?: string,
-    override?: Partial<IndividualConfig>
-  ): void {
+  success(msg: string, title?: string, override?: Partial<IndividualConfig>): void {
     this.toastr.success(msg, title, { ...override });
   }
 

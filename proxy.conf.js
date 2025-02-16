@@ -1,16 +1,16 @@
 module.exports = {
-  "/api/**": {
-    target: "http://api.dionis.cloud/",
+  '/api/**': {
+    target: 'http://api.dionis.cloud/',
     changeOrigin: true,
     secure: false,
   },
-  "/login": {
-    target: "http://api.dionis.cloud/",
+  '/login': {
+    target: 'http://api.dionis.cloud/',
     changeOrigin: true,
     secure: false,
   },
-  "/autologin": {
-    target: "http://api.dionis.cloud/",
+  '/autologin': {
+    target: 'http://api.dionis.cloud/',
     changeOrigin: true,
     secure: false,
   },

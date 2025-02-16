@@ -29,7 +29,7 @@ export class ModalLoaderComponent implements OnInit {
           this.informer.success('Синхронизация успешна');
           this.closeModal();
         },
-        error: (err) => {
+        error: err => {
           this.informer.error(err, 'Ошибка синхронизации');
           this.closeModal();
         },

@@ -1,20 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { CurRoutes } from 'src/app/app.routes';
-import { takeUntil } from 'rxjs';
+import { filter, takeUntil } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
 import { Themes, ThemeService } from '@core/services/theme.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -22,18 +14,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalLoaderComponent } from '../modal-loader/modal-loader.component';
 import { Store } from '@ngrx/store';
 import { selectShop } from 'src/app/store/auth/auth.selectors';
+import { DeliveryLogoMap, KeeperLogoMap } from 'src/app/models/asstets-paths';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatTooltipModule,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatListModule, MatToolbarModule, MatMenuModule, MatTooltipModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,17 +35,27 @@ export class NavBarComponent implements OnInit {
   private readonly store = inject(Store);
 
   hideAction = false;
-
+  logoSrc = KeeperLogoMap[Themes.Light];
+  private isAuthPage = false;
   private isDarkMode = false;
 
   ngOnInit(): void {
     this.themeService.setTheme();
-    this.isDarkMode = this.themeService.getTheme() === Themes.Dark;
+
+    this.themeService.theme$.pipe(takeUntil(this.destroy$)).subscribe(theme => {
+      this.isDarkMode = theme === Themes.Dark;
+      this.updateLogo();
+    });
+
+    const routeSub = this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
+      this.isAuthPage = event.urlAfterRedirects.includes(CurRoutes.Auth);
+      this.updateLogo();
+    });
 
     this.store
       .select(selectShop)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((shop) => {
+      .subscribe(shop => {
         this.hideAction = !!shop.params;
         this.cdr.markForCheck();
       });
@@ -96,7 +92,12 @@ export class NavBarComponent implements OnInit {
   }
 
   changeTheme(): void {
-    this.isDarkMode = !this.isDarkMode;
     this.themeService.setTheme(this.isDarkMode);
+  }
+
+  updateLogo(): void {
+    const logo = this.isAuthPage ? KeeperLogoMap : DeliveryLogoMap;
+    const theme = this.isDarkMode ? Themes.Dark : Themes.Light;
+    this.logoSrc = logo[theme];
   }
 }

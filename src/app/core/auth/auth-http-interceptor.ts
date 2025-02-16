@@ -1,11 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -19,13 +13,10 @@ export class AuthHttpInterceptor implements HttpInterceptor {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.store.select(selectShopToken).pipe(
       take(1),
-      switchMap((shopToken) => {
+      switchMap(shopToken => {
         let modifiedRequest = request;
         if (shopToken) {
           modifiedRequest = request.clone({
@@ -40,9 +31,9 @@ export class AuthHttpInterceptor implements HttpInterceptor {
               this.router.navigate([CurRoutes.Auth]);
             }
             return throwError(() => err);
-          })
+          }),
         );
-      })
+      }),
     );
   }
 }

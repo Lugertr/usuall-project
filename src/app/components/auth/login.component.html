@@ -1,62 +1,51 @@
-@if (hasShopToken) {
-<mat-card class="card">
-  <mat-card-title
-    ><h1>
-      {{ isEdit ? "Редактирование данных" : "Регистрация" }}
-    </h1></mat-card-title
-  >
-  <app-login-desc class="card-info"></app-login-desc>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
-    <mat-button-toggle-group formControlName="type" aria-label="Выберите тип">
-      <mat-button-toggle [value]="exportType.Delivery"
-        >Delivery</mat-button-toggle
-      >
-      <mat-button-toggle [value]="exportType.WSA">WSA</mat-button-toggle>
-    </mat-button-toggle-group>
+@if (hasShopToken || true) {
+  <mat-card class="card">
+    <mat-card-title
+      ><h1>
+        {{ isEdit ? 'Редактирование данных' : 'Регистрация' }}
+      </h1></mat-card-title
+    >
+    <app-login-desc class="card-info"></app-login-desc>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+      <mat-button-toggle-group formControlName="type" aria-label="Выберите тип">
+        <mat-button-toggle [value]="exportType.Delivery">Delivery</mat-button-toggle>
+        <mat-button-toggle [value]="exportType.WSA">WSA</mat-button-toggle>
+      </mat-button-toggle-group>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Ваш {{ loginNameLabel }}</mat-label>
-      <input matInput formControlName="name" required autocomplete="on" />
-      @if (loginForm.controls.name.invalid) {
-      <mat-error>Введите корректный {{ loginNameLabel }}</mat-error>
-      }
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ваш {{ loginNameLabel }}</mat-label>
+        <input matInput formControlName="name" required autocomplete="on" />
+        @if (loginForm.controls.name.invalid) {
+          <mat-error>Введите корректный {{ loginNameLabel }}</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Введите {{ loginSecretLabel }}</mat-label>
-      <input
-        matInput
-        formControlName="secret"
-        [type]="hidePassword ? 'password' : 'text'"
-        required
-        autocomplete="on"
-      />
-      <button
-        type="button"
-        mat-icon-button
-        matSuffix
-        [disabled]="(loading$ | async) || loginForm.invalid"
-        (click)="hidePassword = !hidePassword"
-        class="password-icon"
-      >
-        <mat-icon>{{
-          hidePassword ? "visibility_off" : "visibility"
-        }}</mat-icon>
-      </button>
-      @if (loginForm.controls.secret.invalid) {
-      <mat-error>Введите корректный {{ loginSecretLabel }}</mat-error>
-      }
-    </mat-form-field>
-    <mat-card-actions align="end" class="full-width">
-      <button mat-flat-button color="primary" [disabled]="loading$ | async">
-        {{ isEdit ? "Изменить" : "Создать аккаунт" }}
-      </button>
-    </mat-card-actions>
-  </form>
-</mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Введите {{ loginSecretLabel }}</mat-label>
+        <input matInput formControlName="secret" [type]="hidePassword ? 'password' : 'text'" required autocomplete="on" />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          [disabled]="(loading$ | async) || loginForm.invalid"
+          (click)="hidePassword = !hidePassword"
+          class="password-icon">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (loginForm.controls.secret.invalid) {
+          <mat-error>Введите корректный {{ loginSecretLabel }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-card-actions align="end" class="full-width">
+        <button mat-flat-button color="primary" [disabled]="loading$ | async">
+          {{ isEdit ? 'Изменить' : 'Создать аккаунт' }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
 } @else if ((loading$ | async) === false) {
-<div class="error">
-  <h1>Ошибка!</h1>
-  <span>Не удалось подключиться к Insales</span>
-</div>
+  <div class="error">
+    <h1>Ошибка!</h1>
+    <span>Не удалось подключиться к Insales</span>
+  </div>
 }

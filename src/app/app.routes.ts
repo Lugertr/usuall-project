@@ -10,21 +10,16 @@ export const enum CurRoutes {
 export const routes: Routes = [
   {
     path: CurRoutes.Auth,
-    loadComponent: () =>
-      import('./components/auth/login.component').then((c) => c.LoginComponent),
+    loadComponent: () => import('./components/auth/login.component').then(c => c.LoginComponent),
   },
   {
     path: CurRoutes.Main,
-    loadComponent: () =>
-      import('./components/home/home.component').then((c) => c.HomeComponent),
+    loadComponent: () => import('./components/home/home.component').then(c => c.HomeComponent),
     canActivate: [authGuard],
   },
   {
     path: CurRoutes.Profile,
-    loadComponent: () =>
-      import('./components/profile/profile.component').then(
-        (c) => c.ProfileComponent
-      ),
+    loadComponent: () => import('./components/profile/profile.component').then(c => c.ProfileComponent),
     canActivate: [authGuard],
   },
   { path: '**', redirectTo: CurRoutes.Auth },

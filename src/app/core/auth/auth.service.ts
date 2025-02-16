@@ -31,10 +31,10 @@ export class AuthService {
 
   sync(): Observable<void> {
     return this.http.get('/api/back_office/synchorinization_menu').pipe(
-      mergeMap((t) => {
+      mergeMap(t => {
         return timer(0, 8000).pipe(take(5));
       }),
-      mergeMap(() => this.getSyncStatus())
+      mergeMap(() => this.getSyncStatus()),
     );
   }
 

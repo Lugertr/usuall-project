@@ -30,11 +30,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/loading.css",
-              "@angular/material/prebuilt-themes/cyan-orange.css",
-              "src/styles.scss"
-            ],
+            "styles": ["src/loading.css", "@angular/material/prebuilt-themes/cyan-orange.css", "src/styles.scss"],
             "scripts": []
           },
           "configurations": {

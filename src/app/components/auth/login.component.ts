@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -88,10 +82,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([
-      this.store.select(selectShopToken),
-      this.store.select(selectShop),
-    ])
+    combineLatest([this.store.select(selectShopToken), this.store.select(selectShop)])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([shopToken, shop]) => {
         if (shop?.params && !this.isEdit) {

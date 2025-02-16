@@ -1,13 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  loadShop,
-  loadShopFailure,
-  loadShopSuccess,
-  setShopToken,
-  updateShop,
-  updateShopFailure,
-  updateShopSuccess,
-} from './auth.actions';
+import { loadShop, loadShopFailure, loadShopSuccess, setShopToken, updateShop, updateShopFailure, updateShopSuccess } from './auth.actions';
 import { Shop } from 'src/app/models/auth';
 
 export interface AuthState {
@@ -32,7 +24,7 @@ export const authReducer = createReducer(
     shopToken,
   })),
 
-  on(loadShop, (state) => ({ ...state, loading: true, error: null })),
+  on(loadShop, state => ({ ...state, loading: true, error: null })),
   on(loadShopSuccess, (state, { shop }) => ({
     ...state,
     shop,
@@ -44,7 +36,7 @@ export const authReducer = createReducer(
     loading: false,
   })),
 
-  on(updateShop, (state) => ({ ...state, loading: true, error: null })),
+  on(updateShop, state => ({ ...state, loading: true, error: null })),
   on(updateShopSuccess, (state, { shop }) => ({
     ...state,
     shop,
@@ -54,5 +46,5 @@ export const authReducer = createReducer(
     ...state,
     error,
     loading: false,
-  }))
+  })),
 );

@@ -1,6 +1,6 @@
 <app-loading-bar></app-loading-bar>
 
-@if (showNav) {
+@if (showNav || true) {
   <app-navbar (menuToggle)="sideNavToggle()"></app-navbar>
 }
 
@@ -10,12 +10,7 @@
       <mat-card class="full-height">
         <mat-nav-list>
           @for (link of navLinks; track link) {
-            <a
-              mat-button
-              class="sidenav-routes-item"
-              [routerLink]="link.path"
-              >{{ link.label }}</a
-            >
+            <a mat-button class="sidenav-routes-item" [routerLink]="link.path">{{ link.label }}</a>
           }
         </mat-nav-list>
       </mat-card>

@@ -7,7 +7,7 @@
   height: 80px;
 }
 .app-loading:after {
-  content: " ";
+  content: ' ';
   display: block;
   width: 68px;
   height: 68px;

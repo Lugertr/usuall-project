@@ -10,12 +10,12 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return store.select(selectShopToken).pipe(
-    map((shopToken) => {
+    map(shopToken => {
       if (!shopToken) {
         router.navigate([CurRoutes.Auth]);
         return false;
       }
       return true;
-    })
+    }),
   );
 };

@@ -7,13 +7,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-login-desc',
-  imports: [
-    MatCardModule,
-    MatListModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-  ],
+  imports: [MatCardModule, MatListModule, MatButtonModule, MatIconModule, MatExpansionModule],
   templateUrl: './login-desc.component.html',
   styleUrls: ['./login-desc.component.scss'],
 })

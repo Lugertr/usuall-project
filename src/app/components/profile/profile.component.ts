@@ -17,13 +17,7 @@ import { AsyncPipe } from '@angular/common';
   standalone: true,
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
-  imports: [
-    AsyncPipe,
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatDividerModule,
-  ],
+  imports: [AsyncPipe, MatButtonModule, MatIconModule, MatCardModule, MatDividerModule],
   providers: [DestroyService],
 })
 export class ProfileComponent {
@@ -33,9 +27,7 @@ export class ProfileComponent {
   isEditing: WritableSignal<boolean> = signal(false);
   exportType = ExportType;
 
-  shop: WritableSignal<Observable<Shop>> = signal(
-    this.store.select(selectShop)
-  );
+  shop: WritableSignal<Observable<Shop>> = signal(this.store.select(selectShop));
 
   editProfile(): void {
     this.router.navigate([CurRoutes.Auth], { state: { isEdit: true } });

@@ -1,10 +1,6 @@
 <mat-toolbar>
   <div>
-    <button
-      mat-icon-button
-      (click)="callMenuTrigger()"
-      [class.visibility-none]="hideAction"
-    >
+    <button mat-icon-button (click)="callMenuTrigger()" [class.visibility-none]="hideAction">
       <mat-icon>menu</mat-icon>
     </button>
     <button mat-icon-button (click)="changeTheme()" color="primary">
@@ -12,15 +8,12 @@
     </button>
   </div>
   <span>APP</span>
+  <img src="logoSrc" alt="" />
   <div [class.visibility-none]="hideAction">
     <button mat-icon-button matTooltip="Синхронизация" (click)="onSync()">
       <mat-icon>sync</mat-icon>
     </button>
-    <button
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      matTooltip="Настройки аккаунта"
-    >
+    <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Настройки аккаунта">
       <mat-icon>account_circle</mat-icon>
     </button>
   </div>
