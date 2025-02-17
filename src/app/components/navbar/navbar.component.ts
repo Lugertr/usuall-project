@@ -62,7 +62,7 @@ export class NavBarComponent implements OnInit {
       .select(selectShop)
       .pipe(takeUntil(this.destroy$))
       .subscribe(shop => {
-        this.hideAction = !!shop?.params;
+        this.hideAction = !shop?.params;
         this.cdr.markForCheck();
       });
   }
@@ -105,6 +105,6 @@ export class NavBarComponent implements OnInit {
     const logo = this.isAuthPage ? KeeperLogoMap : DeliveryLogoMap;
     const theme = this.isDarkMode ? Themes.Dark : Themes.Light;
     this.logoSrc = logo[theme];
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 }

@@ -1,8 +1,46 @@
 @use '@angular/material' as mat;
+@use './theme-colors' as custom;
+
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: custom.$primary-palette,
+      tertiary: custom.$tertiary-palette,
+      use-system-variables: true,
+    ),
+    typography: (
+      brand-family: Roboto,
+      plain-family: Roboto,
+      bold-weight: 500,
+      medium-weight: 500,
+      regular-weight: 400,
+      use-system-variables: true,
+    ),
+  )
+);
+
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$cyan-palette,
+      tertiary: mat.$orange-palette,
+      use-system-variables: true,
+    ),
+    typography: (
+      brand-family: Roboto,
+      plain-family: Roboto,
+      bold-weight: 500,
+      medium-weight: 500,
+      regular-weight: 400,
+      use-system-variables: true,
+    ),
+  )
+);
 
 body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
 }
@@ -13,29 +51,15 @@ html {
 
 html,
 html.light-theme {
-  @include mat.theme(
-    (
-      color: (
-        theme-type: light,
-        primary: mat.$green-palette,
-        tertiary: mat.$spring-green-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  @include mat.all-component-themes($light-theme);
+  @include mat.system-level-colors($light-theme);
+  @include mat.system-level-typography($light-theme);
+  @include mat.color-variants-backwards-compatibility($light-theme);
 }
 
 html.dark-theme {
-  @include mat.theme(
-    (
-      color: (
-        theme-type: dark,
-        primary: mat.$cyan-palette,
-        tertiary: mat.$orange-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  @include mat.system-level-colors($dark-theme);
+  @include mat.color-variants-backwards-compatibility($dark-theme);
 }
+
+@include mat.typography-hierarchy($light-theme);
