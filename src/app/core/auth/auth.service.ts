@@ -50,7 +50,7 @@ export class AuthService {
         switchMap(() => {
           return this.getSyncStatus().pipe(
             map(status => {
-              return this.statusProgressMap.get(status) || null;
+              return this.statusProgressMap.get(status?.message?.pop()) || null;
             }),
             takeWhile(progress => progress < this.statusProgressMap['Synchronization process completed'], true)
           );
@@ -59,7 +59,7 @@ export class AuthService {
     ]);
   }
 
-  private getSyncStatus(): Observable<string> {
+  private getSyncStatus(): Observable<{message: string[]}> {
     return this.http.get('/api/back_office/progress_bar');
   }
 }

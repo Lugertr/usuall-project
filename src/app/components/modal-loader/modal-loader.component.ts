@@ -45,6 +45,6 @@ export class ModalLoaderComponent implements OnInit {
   }
 
   closeModal(): void {
-    //this.dialogRef.close();
+    this.dialogRef.close();
   }
 }
