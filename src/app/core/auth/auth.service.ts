@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { RestHttpClient } from '@core/rest-http-client/rest-http-client.service';
-import { catchError, delay, forkJoin, map, mergeMap, Observable, of, switchMap, take, takeWhile, tap, timer } from 'rxjs';
+import { catchError, combineLatest, delay, forkJoin, map, mergeMap, Observable, of, switchMap, take, takeWhile, tap, timer } from 'rxjs';
 import { ExportType, LoginDelivery, LoginWSA, Shop } from 'src/app/models/auth';
 
 export interface BaseLogin {
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   sync(): Observable<[void, number]> {
-    return forkJoin([
+    return combineLatest([
       this.http.get<void>('/api/back_office/synchorinization_menu').pipe(take(1)),
       timer(0, 8000).pipe(
         delay(2000),
