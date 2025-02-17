@@ -50,7 +50,7 @@ export class AuthService {
         switchMap(() => {
           return this.getSyncStatus().pipe(
             map(status => {
-              return this.statusProgressMap.get(status?.message?.pop()) || null;
+              return this.statusProgressMap.get(status?.message[status.message.length - 1]) || null;
             }),
             takeWhile(progress => progress < this.statusProgressMap['Synchronization process completed'], true)
           );
