@@ -1,3 +1,4 @@
 <h2>Ожидание...</h2>
-<mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-<button mat-button (click)="closeModal()">Отмена</button>
+<mat-progress-spinner mode="determinate" [value]="progress"></mat-progress-spinner>
+<div class="progress">{{progress}}</div>
+<button mat-button (click)="closeModal()" color="warn">Отмена</button>
