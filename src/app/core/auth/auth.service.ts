@@ -1,23 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { RestHttpClient } from '@core/rest-http-client/rest-http-client.service';
-import {
-  catchError,
-  combineLatest,
-  delay,
-  forkJoin,
-  map,
-  merge,
-  mergeMap,
-  Observable,
-  of,
-  shareReplay,
-  switchMap,
-  take,
-  takeUntil,
-  takeWhile,
-  tap,
-  timer,
-} from 'rxjs';
+import { combineLatest, delay, map, Observable, switchMap, timer } from 'rxjs';
 import { ExportType, LoginDelivery, LoginWSA, Shop } from 'src/app/models/auth';
 
 export interface BaseLogin {
@@ -68,9 +51,9 @@ export class AuthService {
           return this.getSyncStatus().pipe(
             map(status => {
               return SYNC_STATUS.get(status?.message[status.message.length - 1]) || null;
-            }),
+            })
           );
-        }),
+        })
       ),
     ]);
   }
