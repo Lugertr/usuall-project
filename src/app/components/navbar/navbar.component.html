@@ -10,13 +10,22 @@
   <a [routerLink]="linkToMain">
     <img [ngSrc]="logoSrc" height="44" width="230" priority [alt]="isKeeper ? 'Keeper' : 'Delivery'" class="logo" />
   </a>
-  <div [class.visibility-none]="hideAction">
-    <button mat-icon-button matTooltip="Синхронизация" (click)="onSync()">
+  <div [class.visibility-none]="hideAction" class="actions">
+    <button mat-icon-button matTooltip="Синхронизация" (click)="onSync()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
       <mat-icon>sync</mat-icon>
     </button>
     <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Настройки аккаунта">
       <mat-icon>account_circle</mat-icon>
     </button>
+    <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOpen]="showSyncNotification && !hideAction"
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayHasBackdrop]="true"
+      (backdropClick)="showSyncNotification = false"
+      cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop">
+      <div class="sync-notification"><mat-icon>person_alert</mat-icon><span>Не забудьте про синхронизацию меню!</span></div>
+    </ng-template>
   </div>
 </mat-toolbar>
 

@@ -1,11 +1,42 @@
 .mat-toolbar {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   color: var(--mat-sys-primary);
   background: var(--mat-sys-primary-container);
+  overflow: visible;
 }
 
 .logo {
   height: 100%;
   padding: 10px;
+}
+
+.actions {
+  position: relative;
+}
+
+.sync-notification {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  margin-top: 12px;
+  background: var(--mat-sys-secondary);
+  color: var(--mat-sys-on-tertiary);
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 20px solid var(--mat-sys-secondary);
+    right: 6px;
+    top: 0;
+    z-index: -1;
+  }
 }

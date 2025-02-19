@@ -17,15 +17,27 @@ import { DeliveryLogoMap, KeeperLogoMap } from 'src/app/models/asstets-paths';
 import { NgOptimizedImage } from '@angular/common';
 import { SyncModalLoaderComponent } from '../sync-modal-loader/sync-modal-loader.component';
 import { SyncDescModalComponent } from '../sync/sync-desc-modal/sync-desc-modal.component';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { NavBarNotificationService } from './services/navbar-notification.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatListModule, RouterLink, MatToolbarModule, MatMenuModule, MatTooltipModule, NgOptimizedImage],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    RouterLink,
+    MatToolbarModule,
+    MatMenuModule,
+    MatTooltipModule,
+    NgOptimizedImage,
+    OverlayModule,
+  ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DestroyService, RouterOutlet],
+  providers: [DestroyService, RouterOutlet, NavBarNotificationService],
 })
 export class NavBarComponent implements OnInit {
   @Output() menuToggle: EventEmitter<void> = new EventEmitter();
@@ -35,15 +47,18 @@ export class NavBarComponent implements OnInit {
   private readonly destroy$ = inject(DestroyService);
   private readonly dialog = inject(MatDialog);
   private readonly store = inject(Store);
+  private readonly visitService = inject(NavBarNotificationService);
 
   linkToMain = `/${CurRoutes.Main}`;
   hideAction = false;
   logoSrc = KeeperLogoMap[Themes.Light];
   isKeeper = false;
+  showSyncNotification = false;
   private isDarkMode = false;
 
   ngOnInit(): void {
     this.themeService.setTheme();
+    this.setNotification();
 
     this.themeService.theme$.pipe(takeUntil(this.destroy$)).subscribe(theme => {
       this.isDarkMode = theme === Themes.Dark;
@@ -123,5 +138,12 @@ export class NavBarComponent implements OnInit {
     const theme = this.isDarkMode ? Themes.Dark : Themes.Light;
     this.logoSrc = logo[theme];
     this.cdr.detectChanges();
+  }
+
+  setNotification(): void {
+    if (!this.visitService.hasVisitedInLast24Hours()) {
+      this.showSyncNotification = true;
+    }
+    this.visitService.updateVisitTime();
   }
 }
