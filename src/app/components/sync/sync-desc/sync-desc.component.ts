@@ -6,9 +6,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
-  selector: 'app-login-desc',
+  selector: 'app-sync-desc',
   imports: [MatCardModule, MatListModule, MatButtonModule, MatIconModule, MatExpansionModule],
-  templateUrl: './login-desc.component.html',
-  styleUrls: ['./login-desc.component.scss'],
+  templateUrl: './sync-desc.component.html',
+  styleUrls: ['./sync-desc.component.scss'],
 })
-export class LoginDescComponent {}
+export class SyncDescComponent {}

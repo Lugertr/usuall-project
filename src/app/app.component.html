@@ -1,10 +1,8 @@
 <app-loading-bar></app-loading-bar>
 
-@if (showNav) {
-  <app-navbar (menuToggle)="sideNavToggle()"></app-navbar>
-}
+<app-navbar (menuToggle)="sideNavToggle()"></app-navbar>
 
-<mat-sidenav-container class="sidenav-container" [class.all-grid]="!showNav">
+<mat-sidenav-container class="sidenav-container">
   <mat-sidenav mode="side" [(opened)]="isShowingMenu">
     <div class="sidenav-wrapper">
       <mat-card class="full-height">

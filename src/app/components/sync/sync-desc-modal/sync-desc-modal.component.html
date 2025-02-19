@@ -1,0 +1,8 @@
+<button mat-icon-button class="close" mat-dialog-close (click)="closeDialog()">
+  <mat-icon>close</mat-icon>
+</button>
+<app-sync-desc class="content"></app-sync-desc>
+<button (click)="startSync()" color="accent" mat-flat-button matTooltip="Обновить детализацию">
+  Синхронизировать
+  <mat-icon>refresh</mat-icon>
+</button>

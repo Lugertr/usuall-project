@@ -1,0 +1,14 @@
+:host {
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: auto;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+h2 {
+  margin-bottom: 20px;
+}

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'ngx-toastr/toastr';
 @use 'styles/themes.scss';
+@use 'styles/modal.scss';
 
 html * {
   box-sizing: border-box;
@@ -11,9 +12,33 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+p {
   margin: 0;
   padding: 0;
+  width: fit-content;
+}
+
+li,
+ul {
+  width: fit-content;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--mat-sys-primary);
+  transition: all 0.3s ease;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .link-icon {
+    font-size: 14px;
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 6px;
+  }
 }
 
 body,

@@ -5,7 +5,6 @@
         {{ isEdit ? 'Редактирование данных' : 'Регистрация' }}
       </h1></mat-card-title
     >
-    <app-login-desc class="card-info"></app-login-desc>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
       <mat-button-toggle-group formControlName="type" aria-label="Выберите тип">
         <mat-button-toggle [value]="exportType.Delivery">Delivery</mat-button-toggle>
@@ -48,4 +47,7 @@
     <h1>Ошибка!</h1>
     <span>Не удалось подключиться к Insales</span>
   </div>
+  <a class="link" [routerLink]="linkToSyncFAQ"
+    >Но вы можете посмотреть инструкцию по синхронизации<mat-icon class="link-icon">open_in_new</mat-icon></a
+  >
 }

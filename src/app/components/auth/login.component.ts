@@ -9,11 +9,10 @@ import { LoadingBarService } from '@core/loading-bar/loading-bar.service';
 import { AsyncPipe } from '@angular/common';
 import { combineLatest, take, takeUntil } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
-import { LoginDescComponent } from './login-desc/login-desc.component';
 import { MatCardModule } from '@angular/material/card';
 import { selectShop, selectShopToken } from 'src/app/store/auth/auth.selectors';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ExportType, LoginDelivery, LoginWSA } from 'src/app/models/auth';
 import { updateShop, updateShopSuccess } from 'src/app/store/auth/auth.actions';
 import { CurRoutes } from 'src/app/app.routes';
@@ -30,7 +29,7 @@ import { CurRoutes } from 'src/app/app.routes';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    LoginDescComponent,
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
@@ -49,6 +48,7 @@ export class LoginComponent implements OnInit {
   hasShopToken: boolean;
   isEdit = false;
   loading$ = this.loadingBarSrv.show$;
+  linkToSyncFAQ = `/${CurRoutes.SyncFAQ}`;
 
   loginForm = this.fb.group({
     type: [ExportType.Delivery, [Validators.required]],

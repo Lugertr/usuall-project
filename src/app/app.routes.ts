@@ -5,6 +5,7 @@ export const enum CurRoutes {
   Auth = 'auth',
   Main = 'main',
   Profile = 'profile',
+  SyncFAQ = 'sync-faq',
 }
 
 export const routes: Routes = [
@@ -21,6 +22,10 @@ export const routes: Routes = [
     path: CurRoutes.Profile,
     loadComponent: () => import('./components/profile/profile.component').then(c => c.ProfileComponent),
     canActivate: [authGuard],
+  },
+  {
+    path: CurRoutes.SyncFAQ,
+    loadComponent: () => import('./components/sync/sync-desc/sync-desc.component').then(c => c.SyncDescComponent),
   },
   { path: '**', redirectTo: CurRoutes.Auth },
 ];

@@ -1,0 +1,25 @@
+:host {
+  display: grid;
+  grid-template-rows: 1fr 40px;
+  gap: 10px;
+  height: 700px;
+  max-height: 90vh;
+  width: fit-content;
+  padding: 20px 0;
+}
+
+.content {
+  padding: 0 20px;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.mdc-button {
+  width: fit-content;
+  justify-self: flex-end;
+  margin: 0 20px;
+}

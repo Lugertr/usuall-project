@@ -7,12 +7,15 @@
   gap: 24px;
 }
 
+.spinner-container {
+  position: relative;
+}
+
 .progress {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   font: var(--mat-sys-display-medium);
   letter-spacing: var(--mat-sys-display-medium-tracking);
-  padding-top: 32px;
 }
