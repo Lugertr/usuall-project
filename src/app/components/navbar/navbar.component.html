@@ -7,8 +7,15 @@
       <mat-icon>contrast</mat-icon>
     </button>
   </div>
-  <a [routerLink]="linkToMain">
-    <img [ngSrc]="logoSrc" height="44" width="230" priority [alt]="isKeeper ? 'Keeper' : 'Delivery'" class="logo" />
+  <a [routerLink]="linkToMain" class="logo">
+    <img
+      [ngSrc]="logoSrc"
+      height="44"
+      width="194"
+      sizes="(max-width: 194px) 20vw, 5vw"
+      priority
+      [alt]="isKeeper ? 'Keeper' : 'Delivery'"
+      class="logo-img" />
   </a>
   <div [class.visibility-none]="hideAction" class="actions">
     <button mat-icon-button matTooltip="Синхронизация" (click)="onSync()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">

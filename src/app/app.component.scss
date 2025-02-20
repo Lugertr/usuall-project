@@ -7,15 +7,20 @@
 }
 
 .sidenav-container {
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
   height: 100%;
   background-color: var(--mat-sys-background);
 }
 
+.mat-sidenav.mat-drawer-over.mat-drawer-opened {
+  background-color: transparent;
+}
+
 .sidenav-wrapper {
-  border-radius: none;
   height: 100%;
   padding: 20px;
-  background-color: var(--mat-sys-background);
 }
 
 .mat-mdc-card {

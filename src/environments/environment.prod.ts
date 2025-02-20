@@ -10,4 +10,5 @@ export const environment = {
     token3: import.meta.env.NG_APP_TOKEN3 || '',
     insales_id: Number(import.meta.env.NG_APP_INSALES_ID) || 0,
   },
+  mobileWidth: 800,
 };

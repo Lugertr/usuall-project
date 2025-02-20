@@ -3,7 +3,7 @@
 <app-navbar (menuToggle)="sideNavToggle()"></app-navbar>
 
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mode="side" [(opened)]="isShowingMenu">
+  <mat-sidenav [mode]="isMobile ? 'over' : 'side'" [(opened)]="isShowingMenu">
     <div class="sidenav-wrapper">
       <mat-card class="full-height">
         <mat-nav-list>

@@ -11,6 +11,19 @@
 .logo {
   height: 100%;
   padding: 10px;
+  display: flex;
+}
+
+.logo-img {
+  width: fit-content;
+  margin: auto;
+}
+
+@media screen and (max-width: 450px) {
+  .logo-img {
+    max-width: 100px;
+    max-height: 25px;
+  }
 }
 
 .actions {
