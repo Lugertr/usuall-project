@@ -15,4 +15,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY public/favicon.ico .
 COPY --from=build /app/dist/adm .
 
+COPY ssl/certificate.crt /etc/nginx/ssl/certificate.crt
+COPY ssl/private.key /etc/nginx/ssl/private.key
+
 EXPOSE 80
