@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: .
+    container_name: nginx_ssl
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/api.dionis.cloud/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/api.dionis.cloud/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

@@ -9,13 +9,15 @@ RUN npm ci && \
 
 FROM nginx:1.17.1-alpine
 
-WORKDIR /etc/nginx/html
-RUN rm -rf * *.* && rm -f /etc/nginx.conf && rm -rf /etc/nginx/conf.d
+WORKDIR /usr/share/nginx/html
+RUN rm -rf * && rm -f /etc/nginx/nginx.conf && rm -rf /etc/nginx/conf.d/*
+
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY public/favicon.ico .
+
 COPY --from=build /app/dist/adm .
 
-COPY certificate.crt /etc/nginx/ssl/certificate.crt
-COPY private.key /etc/nginx/ssl/private.key
+COPY public/favicon.ico .
 
-EXPOSE 80
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]
