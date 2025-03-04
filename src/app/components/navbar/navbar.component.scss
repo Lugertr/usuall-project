@@ -12,9 +12,11 @@
   height: 100%;
   padding: 10px;
   display: flex;
+  width: fit-content;
 }
 
 .logo-img {
+  max-width: 200px;
   width: fit-content;
   margin: auto;
 }
