@@ -1,31 +1,25 @@
 :host {
-  display: grid;
-  grid-template-rows: 64px auto;
-  height: 100vh;
-  width: 100vw;
+  max-width: 100vw;
+  min-height: 100vh;
   overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
 
 .sidenav-container {
-  max-width: 100vw;
-  max-height: 100vh;
+  margin-top: 64px;
   width: 100%;
-  height: 100%;
   background-color: var(--mat-sys-background);
+  display: flex;
 }
 
-.mat-sidenav.mat-drawer-over.mat-drawer-opened {
+.mat-drawer.mat-sidenav {
   background-color: transparent;
 }
 
 .sidenav-wrapper {
   height: 100%;
   padding: 20px;
-}
-
-.mat-mdc-card {
-  background: var(--mat-sys-primary-container);
-  color: var(--mat-sys-primary);
 }
 
 .mat-drawer-side {
@@ -35,9 +29,10 @@
 
 .content {
   display: flex;
+  flex-direction: column;
   height: 100%;
+  width: 100%;
   padding: 20px;
-  background-color: var(--mat-sys-surface);
 }
 
 .mat-mdc-nav-list .mat-mdc-list-item {

@@ -1,12 +1,12 @@
 @use '@angular/material' as mat;
-@use './theme-colors' as custom;
+@use './custom_colors.scss' as theme-colors;
 
 $light-theme: mat.define-theme(
   (
     color: (
       theme-type: light,
-      primary: custom.$primary-palette,
-      tertiary: custom.$tertiary-palette,
+      primary: mat.$green-palette,
+      tertiary: mat.$violet-palette,
       use-system-variables: true,
     ),
     typography: (
@@ -55,11 +55,13 @@ html.light-theme {
   @include mat.system-level-colors($light-theme);
   @include mat.system-level-typography($light-theme);
   @include mat.color-variants-backwards-compatibility($light-theme);
+  @include mat.theme-overrides(theme-colors.$light-theme);
 }
 
 html.dark-theme {
   @include mat.system-level-colors($dark-theme);
   @include mat.color-variants-backwards-compatibility($dark-theme);
+  @include mat.theme-overrides(theme-colors.$dark-theme);
 }
 
 @include mat.typography-hierarchy($light-theme);

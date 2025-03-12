@@ -1,4 +1,36 @@
 <mat-card class="card">
-  <mat-card-title>Главная</mat-card-title>
-  <mat-card-content>В процессе разработки...</mat-card-content>
+  <mat-card-title>
+    <img [ngSrc]="rKeeperLogo" height="44" width="194" sizes="(max-width: 194px) 20vw, 5vw" priority alt="R_keeper Logo" />
+    <mat-icon fontIcon="add"></mat-icon>
+    <img
+      class="insales-logo"
+      [ngSrc]="insalesLogo"
+      height="44"
+      width="144"
+      sizes="(max-width: 194px) 20vw, 5vw"
+      priority
+      alt="Insales Logo" />
+  </mat-card-title>
+  <mat-card-content>
+    <div class="content-section">
+      <h5 class="h-decoration">Меню и справочная информация</h5>
+      <span
+        >Слева сверху можно открыть меню "<mat-icon class="text-icon">menu</mat-icon>" .В этом меню доступна
+        <a class="link" [routerLink]="linkToSyncFAQ"
+          >справочная информация по синхронизации<mat-icon class="link-icon">open_in_new</mat-icon></a
+        >
+      </span>
+    </div>
+    <div class="content-section">
+      <h5 class="h-decoration">Синхронизация</h5>
+      <span> значок "<mat-icon class="text-icon">sync</mat-icon>" выполнит синхронизацию меню. </span>
+    </div>
+    <div class="content-section">
+      <h5 class="h-decoration">Пользователь</h5>
+      <span>
+        нажмите на значок "<mat-icon class="text-icon">account_circle</mat-icon>" , чтобы посмотреть данные пользователя или отредактировать
+        их.
+      </span>
+    </div>
+  </mat-card-content>
 </mat-card>

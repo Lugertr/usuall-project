@@ -1,6 +1,9 @@
 :host {
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card {
@@ -8,14 +11,12 @@
   gap: 20px;
   max-width: 90%;
   width: fit-content;
-  margin: auto;
 }
 
 .card-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   height: fit-content;
   width: fit-content;
 }
@@ -25,12 +26,6 @@
   align-items: center;
   justify-content: flex-start;
   width: fit-content;
-}
-
-.content-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
 .card-content-item {

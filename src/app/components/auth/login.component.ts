@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate([CurRoutes.Main]);
         } else {
           this.hasShopToken = !!shopToken;
-          if (this.isEdit) {
+          if (this.isEdit && shop?.export_type) {
             let formData: { type: ExportType; name: string; secret: string };
             switch (shop.export_type) {
               case this.exportType.Delivery:

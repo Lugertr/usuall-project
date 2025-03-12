@@ -12,6 +12,7 @@ import { CurRoutes } from './app.routes';
 import { fromEvent, takeUntil } from 'rxjs';
 import { DestroyService } from '@core/services/destroy.service';
 import { environment } from 'src/environments/environment';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ import { environment } from 'src/environments/environment';
     LoadingBarComponent,
     NavBarComponent,
     RouterOutlet,
+    FooterComponent,
   ],
   providers: [DestroyService],
 })

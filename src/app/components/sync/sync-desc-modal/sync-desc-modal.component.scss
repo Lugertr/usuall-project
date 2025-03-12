@@ -2,14 +2,16 @@
   display: grid;
   grid-template-rows: 1fr 40px;
   gap: 10px;
-  height: 700px;
   max-height: 90vh;
+  max-width: 90vw;
   width: fit-content;
   padding: 20px 0;
 }
 
 .content {
   padding: 0 20px;
+  overflow: auto;
+  height: 100%;
 }
 
 .close {
