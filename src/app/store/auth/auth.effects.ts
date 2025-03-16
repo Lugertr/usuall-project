@@ -37,7 +37,7 @@ export class AuthEffects {
         if (shop) {
           return loadShopSuccess({ shop });
         }
-        return loadShopFailure({ error: 'shop is empty' });
+        return loadShopFailure({ error: 'Нет информации о магазине' });
       }),
       catchError(error => {
         this.informer.error(error, 'Ошибка авторизации клиента');
@@ -54,10 +54,10 @@ export class AuthEffects {
           this.loadingBarSrv.withLoading(),
           map(updatedShop => updateShopSuccess({ shop: updatedShop })),
           tap(() => {
-            this.informer.success('Авторизация клиента упешна');
+            this.informer.success('Данные клиента успешно изменены');
           }),
           catchError(error => {
-            this.informer.error(error, 'Ошибка авторизации клиента');
+            this.informer.error(error, 'Ошибка изменения данных клиента');
             return of(updateShopFailure({ error: error.message }));
           }),
         ),

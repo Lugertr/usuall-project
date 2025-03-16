@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { selectShop } from 'src/app/store/auth/auth.selectors';
-import { DeliveryLogoMap, KeeperLogoMap } from 'src/app/models/asstets-paths';
+import { deliveryLogoMap, keeperLogoMap } from 'src/app/models/asstets-paths';
 import { NgOptimizedImage } from '@angular/common';
 import { SyncModalLoaderComponent } from '../sync-modal-loader/sync-modal-loader.component';
 import { SyncDescModalComponent } from '../sync/sync-desc-modal/sync-desc-modal.component';
@@ -51,7 +51,7 @@ export class NavBarComponent implements OnInit {
 
   linkToMain = `/${CurRoutes.Main}`;
   hideAction = false;
-  logoSrc = KeeperLogoMap[Themes.Light];
+  logoSrc = keeperLogoMap[Themes.Light];
   isKeeper = false;
   showSyncNotification = false;
   private isDarkMode = false;
@@ -134,7 +134,7 @@ export class NavBarComponent implements OnInit {
   }
 
   updateLogo(): void {
-    const logo = this.isKeeper ? KeeperLogoMap : DeliveryLogoMap;
+    const logo = this.isKeeper ? keeperLogoMap : deliveryLogoMap;
     const theme = this.isDarkMode ? Themes.Dark : Themes.Light;
     this.logoSrc = logo[theme];
     this.cdr.detectChanges();

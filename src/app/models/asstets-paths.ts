@@ -5,7 +5,7 @@ export const enum KeeperLogoPaths {
   Dark = 'logo/keeper-logo-dark.png',
 }
 
-export const KeeperLogoMap: Record<Themes, string> = {
+export const keeperLogoMap: Record<Themes, string> = {
   [Themes.Light]: KeeperLogoPaths.Light,
   [Themes.Dark]: KeeperLogoPaths.Dark,
 };
@@ -15,7 +15,17 @@ export const enum DeliveryLogoPaths {
   Dark = 'logo/delivery-logo-dark.png',
 }
 
-export const DeliveryLogoMap: Record<Themes, string> = {
+export const deliveryLogoMap: Record<Themes, string> = {
   [Themes.Light]: DeliveryLogoPaths.Light,
   [Themes.Dark]: DeliveryLogoPaths.Dark,
+};
+
+export const enum InsalesLogoPaths {
+  Light = 'logo/insales_light.svg',
+  Dark = 'logo/insales_dark.svg',
+}
+
+export const insalesLogoMap: Record<Themes, string> = {
+  [Themes.Light]: InsalesLogoPaths.Light,
+  [Themes.Dark]: InsalesLogoPaths.Dark,
 };

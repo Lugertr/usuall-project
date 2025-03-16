@@ -17,7 +17,8 @@ export class InformerService {
         errMsg = err;
         break;
       default:
-        errMsg = (err.error instanceof HttpErrorResponse ? err.error : err).message || '';
+        const errHandler = err?.error || err;
+        errMsg = errHandler.message || errHandler.details || '';
         break;
     }
 
