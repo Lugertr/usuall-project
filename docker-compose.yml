@@ -9,8 +9,9 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - /etc/letsencrypt/live/api.dionis.cloud/fullchain.pem
-      - /etc/letsencrypt/live/api.dionis.cloud/privkey.pem
+      - /etc/letsencrypt/live/api.dionis.cloud/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/api.dionis.cloud/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+      - /etc/letsencrypt/live/api.dionis.cloud:/etc/letsencrypt:ro
     networks:
       - app_network
 
