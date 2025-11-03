@@ -10,8 +10,9 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - /etc/letsencrypt/live:/etc/letsencrypt/live:ro
-      - /etc/letsencrypt/archive:/etc/letsencrypt/archive:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt/live/api.dionis.cloud:/etc/nginx/ssl:ro
+      - /etc/letsencrypt/archive/api.dionis.cloud:/etc/nginx/archive/api.dionis.cloud:ro
     networks:
       - app_network
 
