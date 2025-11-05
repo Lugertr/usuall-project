@@ -1,15 +1,15 @@
 services:
   nginx:
-    image: insale-app:latest         
+    image: insale-app:latest
     container_name: nginx_ssl
     restart: unless-stopped
-    user: "0:0"                      
+    user: '0:0'
     ports:
-      - "8080:80"
-      - "443:443"                    
+      - '80:80'
+      - '443:443'
     volumes:
-      - /etc/letsencrypt/live/api.dionis.cloud:/etc/nginx/ssl:ro
-      - /etc/letsencrypt/archive/api.dionis.cloud:/etc/nginx/archive/api.dionis.cloud:ro
+      - /etc/letsencrypt/archive/api.dionis.cloud/fullchain4.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/archive/api.dionis.cloud/privkey4.pem:/etc/nginx/ssl/privkey.pem:ro
     networks:
       - app_network
 
