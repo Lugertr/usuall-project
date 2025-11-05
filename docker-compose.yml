@@ -4,12 +4,15 @@ services:
     container_name: nginx_ssl
     restart: unless-stopped
     user: '0:0'
+
     ports:
-      - '80:80'
-      - '443:443'
+      - '7771:7771'
+
     volumes:
+      - ./app.conf:/etc/nginx/conf.d/app.conf:ro
       - /etc/letsencrypt/archive/api.dionis.cloud/fullchain4.pem:/etc/nginx/ssl/fullchain.pem:ro
       - /etc/letsencrypt/archive/api.dionis.cloud/privkey4.pem:/etc/nginx/ssl/privkey.pem:ro
+
     networks:
       - app_network
 
